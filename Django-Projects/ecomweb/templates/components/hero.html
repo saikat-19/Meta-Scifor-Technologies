@@ -1,0 +1,31 @@
+<!-- Hero Component -->
+<section class="bg-white py-24 sm:py-32">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h1 class="text-4xl font-extrabold tracking-tight text-gray-900 sm:text-5xl md:text-6xl">
+                <span class="block">Welcome to</span>
+                <span class="block text-indigo-600 mt-2">ShopEase</span>
+            </h1>
+            {% if subtitle %}
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 sm:text-xl md:mt-6">
+                {{ subtitle }}
+            </p>
+            {% else %}
+            <p class="mt-4 max-w-2xl mx-auto text-lg text-gray-600 sm:text-xl md:mt-6">
+                Discover amazing products at unbeatable prices. Shop the latest trends in fashion, electronics, home, and more.
+            </p>
+            {% endif %}
+            
+            <div class="mt-8 flex flex-col sm:flex-row justify-center gap-4">
+                <a href="{% url 'ecom:product_list' %}" class="inline-flex items-center justify-center px-8 py-3 border border-transparent text-base font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 transition-colors duration-200 md:py-3.5 md:text-lg md:px-10">
+                    Shop Now
+                </a>
+                {% if secondary_link %}
+                <a href="{{ secondary_link }}" class="inline-flex items-center justify-center px-8 py-3 border border-gray-300 text-base font-medium rounded-md text-indigo-700 bg-white hover:bg-gray-50 transition-colors duration-200 md:py-3.5 md:text-lg md:px-10 shadow-sm">
+                    {{ secondary_link_text|default:"View Deals" }}
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</section>

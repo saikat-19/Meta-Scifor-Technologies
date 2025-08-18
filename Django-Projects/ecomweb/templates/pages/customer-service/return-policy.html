@@ -1,0 +1,57 @@
+{% extends 'pages/customer-service/base.html' %}
+
+{% block page_title %}Return Policy{% endblock %}
+{% block page_subtitle %}Our hassle-free return and exchange process{% endblock %}
+
+{% block customer_service_content %}
+<div class="space-y-8">
+    <div class="prose max-w-none">
+        <h2>30-Day Return Policy</h2>
+        <p>We want you to be completely satisfied with your purchase. If you're not happy with your order, you may return most items within 30 days of delivery for a full refund or exchange.</p>
+        
+        <h3>Eligibility</h3>
+        <p>To be eligible for a return, your item must be:</p>
+        <ul>
+            <li>In its original condition and packaging</li>
+            <li>Unused and unworn with all tags attached</li>
+            <li>In the original packaging with all accessories included</li>
+            <li>Accompanied by the original receipt or proof of purchase</li>
+        </ul>
+        
+        <h3>Non-Returnable Items</h3>
+        <p>Certain items cannot be returned:</p>
+        <ul>
+            <li>Gift cards</li>
+            <li>Downloadable software products</li>
+            <li>Personalized or custom-made items</li>
+            <li>Items marked as "final sale" or "non-returnable"</li>
+        </ul>
+        
+        <h3>How to Initiate a Return</h3>
+        <ol>
+            <li>Log in to your account and go to Order History</li>
+            <li>Select the order containing the item you wish to return</li>
+            <li>Click "Return Item" and follow the instructions</li>
+            <li>Print the return label and attach it to your package</li>
+            <li>Ship the item back to us using the provided label</li>
+        </ol>
+        
+        <h3>Return Shipping</h3>
+        <p>Customers are responsible for return shipping costs unless the return is due to our error or a defective item. We recommend using a trackable shipping service and purchasing shipping insurance, as we cannot guarantee that we will receive your returned item.</p>
+        
+        <h3>Refunds</h3>
+        <p>Once we receive your return, we will inspect it and process your refund within 3-5 business days. You will receive an email notification when your refund has been processed. The refund will be credited to your original method of payment. Please allow additional time for your bank or credit card company to process and post the refund.</p>
+        
+        <h3>Exchanges</h3>
+        <p>For exchanges, please return the original item and place a new order for the desired item. This ensures you receive your new item as quickly as possible.</p>
+        
+        <div class="bg-indigo-50 p-6 rounded-lg mt-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Need help with a return?</h3>
+            <p class="text-gray-600 mb-4">If you have any questions about our return policy or need assistance with a return, please contact our customer service team.</p>
+            <a href="{% url 'ecom:contact' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

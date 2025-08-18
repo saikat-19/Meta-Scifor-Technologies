@@ -1,0 +1,58 @@
+{% extends 'pages/customer-service/base.html' %}
+
+{% block page_title %}Terms & Conditions{% endblock %}
+{% block page_subtitle %}The legal terms that govern your use of our website and services{% endblock %}
+
+{% block customer_service_content %}
+<div class="space-y-8">
+    <div class="prose max-w-none">
+        <p class="text-gray-600 mb-6">Last Updated: August 10, 2024</p>
+        
+        <h2>1. Introduction</h2>
+        <p>Welcome to ShopEase. These Terms & Conditions ("Terms") govern your use of our website and the purchase of products from us. By accessing or using our website, you agree to be bound by these Terms.</p>
+        
+        <h2>2. Use of the Website</h2>
+        <p>You agree to use our website only for lawful purposes and in accordance with these Terms. You agree not to use our website:</p>
+        <ul>
+            <li>In any way that violates any applicable federal, state, local, or international law or regulation</li>
+            <li>To impersonate or attempt to impersonate the Company or a Company employee, another user, or any other person or entity</li>
+            <li>To engage in any other conduct that restricts or inhibits anyone's use or enjoyment of the website</li>
+        </ul>
+        
+        <h2>3. Product Information</h2>
+        <p>We make every effort to display as accurately as possible the colors, features, specifications, and details of the products available on our website. However, we do not guarantee that the colors, features, specifications, and details of the products will be accurate, complete, reliable, current, or free of other errors.</p>
+        
+        <h2>4. Pricing and Payment</h2>
+        <p>All prices are shown in your local currency and are exclusive of taxes and shipping fees, unless otherwise stated. We reserve the right to modify prices at any time without prior notice. Payment must be made in full before we process and ship your order.</p>
+        
+        <h2>5. Order Acceptance and Cancellation</h2>
+        <p>Your receipt of an order confirmation does not signify our acceptance of your order, nor does it constitute confirmation of our offer to sell. We reserve the right to accept or decline your order for any reason, including limitations on quantities available for purchase, inaccuracies, or errors in product or pricing information.</p>
+        
+        <h2>6. Shipping and Delivery</h2>
+        <p>Shipping times and costs vary depending on your location and the shipping method selected. Please refer to our <a href="{% url 'ecom:shipping_policy' %}" class="text-indigo-600 hover:text-indigo-800">Shipping Policy</a> for more information. We are not responsible for any delays caused by shipping carriers or other factors beyond our control.</p>
+        
+        <h2>7. Returns and Refunds</h2>
+        <p>Please review our <a href="{% url 'ecom:return_policy' %}" class="text-indigo-600 hover:text-indigo-800">Return Policy</a> for detailed information about our return and refund process. All returns must comply with our return policy to be eligible for a refund or exchange.</p>
+        
+        <h2>8. Intellectual Property</h2>
+        <p>All content included on this website, such as text, graphics, logos, images, and software, is the property of ShopEase or its content suppliers and is protected by copyright, trademark, and other intellectual property laws. You may not reproduce, distribute, modify, create derivative works of, publicly display, or in any way exploit any of the content without our prior written permission.</p>
+        
+        <h2>9. Limitation of Liability</h2>
+        <p>In no event shall ShopEase, nor its directors, employees, partners, agents, suppliers, or affiliates, be liable for any indirect, incidental, special, consequential, or punitive damages, including without limitation, loss of profits, data, use, goodwill, or other intangible losses, resulting from your access to or use of or inability to access or use the website.</p>
+        
+        <h2>10. Governing Law</h2>
+        <p>These Terms shall be governed by and construed in accordance with the laws of the State of [Your State], without regard to its conflict of law provisions.</p>
+        
+        <h2>11. Changes to Terms</h2>
+        <p>We reserve the right to modify these Terms at any time. If we make material changes to these Terms, we will notify you by updating the "Last Updated" date at the top of this page.</p>
+        
+        <div class="bg-indigo-50 p-6 rounded-lg mt-8">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Have Questions?</h3>
+            <p class="text-gray-600 mb-4">If you have any questions about these Terms & Conditions, please contact us.</p>
+            <a href="{% url 'ecom:contact' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</div>
+{% endblock %}

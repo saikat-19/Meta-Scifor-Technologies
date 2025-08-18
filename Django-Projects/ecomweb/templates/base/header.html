@@ -1,0 +1,168 @@
+<header class="bg-white shadow-sm sticky top-0 z-50">
+    <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between h-16">
+            <!-- Logo -->
+            <div class="flex-shrink-0 flex items-center">
+                <a href="{% url 'ecom:home' %}" class="text-2xl font-bold text-indigo-600">
+                    <i class="fas fa-shopping-bag mr-2"></i>
+                    ShopEase
+                </a>
+            </div>
+
+            <!-- Desktop Navigation -->
+            <div class="hidden md:ml-10 md:flex md:space-x-8">
+                <a href="{% url 'ecom:home' %}" class="{% if request.resolver_match.url_name == 'home' %}text-indigo-600 border-b-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} inline-flex items-center px-1 pt-1 pb-2 text-sm font-medium group relative">
+                    <i class="fas fa-home mr-2 h-4 w-4 {% if request.resolver_match.url_name == 'home' %}text-indigo-600{% endif %}"></i>
+                    <span>Home</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <a href="{% url 'ecom:product_list' %}" class="{% if request.resolver_match.url_name == 'product_list' %}text-indigo-600 border-b-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} inline-flex items-center px-1 pt-1 pb-2 text-sm font-medium group relative">
+                    <i class="fas fa-box-open mr-2 h-4 w-4 {% if request.resolver_match.url_name == 'product_list' %}text-indigo-600{% endif %}"></i>
+                    <span>Products</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
+                </a>
+                <!-- <a href="#" class="{% if request.resolver_match.url_name == 'categories' %}text-indigo-600 border-b-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} inline-flex items-center px-1 pt-1 pb-2 text-sm font-medium group relative">
+                    <i class="fas fa-tags mr-2 h-4 w-4 {% if request.resolver_match.url_name == 'categories' %}text-indigo-600{% endif %}"></i>
+                    <span>Categories</span>
+                    <span class="absolute bottom-0 left-0 w-0 h-0.5 bg-indigo-600 transition-all duration-200 group-hover:w-full"></span>
+                </a> -->
+                
+            </div>
+
+            <!-- Right side icons -->
+            <div class="hidden md:ml-6 md:flex md:items-center space-x-4">
+                <!-- Search -->
+                <div class="flex-1 flex items-center justify-center px-2 lg:ml-6 lg:justify-end">
+                    <div class="w-full max-w-lg lg:max-w-xs">
+                        <label for="search" class="sr-only">Search</label>
+                        <div class="relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <i class="h-4 w-4 text-gray-400 fas fa-search"></i>
+                            </div>
+                            <input id="search" name="search" class="block w-full pl-10 pr-3 py-2 border border-gray-300 rounded-md text-sm placeholder-gray-500 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500" placeholder="Search products..." type="search">
+                        </div>
+                    </div>
+                </div>
+                <!-- Cart -->
+                <div class="flow-root">
+                    <a href="{% url 'ecom:cart_detail' %}" class="group -m-2 p-2 flex items-center text-gray-500 hover:text-indigo-600 relative">
+                        <i class="fas fa-shopping-cart h-6 w-6 flex-shrink-0"></i>
+                        <span id="cart-count" class="absolute -top-1 -right-1 inline-flex items-center justify-center h-5 w-5 rounded-full bg-indigo-600 text-white text-xs font-medium {% if not cart or cart.total_items == 0 %}hidden{% endif %}">
+                            {% if cart %}{{ cart.total_items }}{% else %}0{% endif %}
+                        </span>
+                        <span class="sr-only">items in cart, view cart</span>
+                    </a>
+                </div>
+
+                <!-- User menu -->
+                <div class="ml-4 relative" x-data="{ open: false }" @click.away="open = false">
+                    {% if user.is_authenticated %}
+                    <div>
+                        <button @click="open = !open" type="button" class="bg-white rounded-full flex text-sm focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500" id="user-menu-button" :aria-expanded="open" aria-haspopup="true">
+                            <span class="sr-only">Open user menu</span>
+                            <div class="h-8 w-8 rounded-full bg-indigo-100 flex items-center justify-center">
+                                <i class="fas fa-user text-indigo-600"></i>
+                            </div>
+                        </button>
+                        <!-- Dropdown menu -->
+                        <div x-show="open" 
+                             x-transition:enter="transition ease-out duration-100"
+                             x-transition:enter-start="transform opacity-0 scale-95"
+                             x-transition:enter-end="transform opacity-100 scale-100"
+                             x-transition:leave="transition ease-in duration-75"
+                             x-transition:leave-start="transform opacity-100 scale-100"
+                             x-transition:leave-end="transform opacity-0 scale-95"
+                             class="origin-top-right absolute right-0 mt-2 w-48 rounded-md shadow-lg py-1 bg-white ring-1 ring-black ring-opacity-5 focus:outline-none z-50" 
+                             role="menu" 
+                             aria-orientation="vertical" 
+                             aria-labelledby="user-menu-button" 
+                             tabindex="-1">
+                            {% if user.is_seller or user.is_moderator or user.is_admin %}
+                            <a href="{% url 'ecom:dashboard' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1">
+                                <i class="fas fa-tachometer-alt mr-2 w-4"></i> Dashboard
+                            </a>
+                            {% endif %}
+                            <a href="{% url 'ecom:profile' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-0">
+                                <i class="fas fa-user-circle mr-2 w-4"></i> Your Profile
+                            </a>
+                            <a href="{% url 'ecom:order_history' %}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-1">
+                                <i class="fas fa-clock mr-2 w-4"></i> Order History
+                            </a>
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-2">
+                                <i class="fas fa-truck mr-2 w-4"></i> Track Order
+                            </a>
+                            <div class="border-t border-gray-100 my-1"></div>
+                            <form method="post" action="{% url 'ecom:logout' %}" class="w-full">
+                                {% csrf_token %}
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100" role="menuitem" tabindex="-1" id="user-menu-item-3">
+                                    <i class="fas fa-sign-out-alt mr-2 w-4"></i> Sign out
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+                    {% else %}
+                    <div class="flex items-center space-x-4">
+                        <a href="{% url 'ecom:login' %}" class="text-gray-700 hover:text-indigo-600 text-sm font-medium">
+                            Sign In
+                        </a>
+                        <a href="{% url 'ecom:signup' %}" class="bg-indigo-600 text-white px-4 py-2 rounded-md text-sm font-medium hover:bg-indigo-700">
+                            Sign Up
+                        </a>
+                    </div>
+                    {% endif %}
+                </div>
+            </div>
+
+            <!-- Mobile menu button -->
+            <div class="-mr-2 flex items-center md:hidden">
+                <button type="button" class="inline-flex items-center justify-center p-2 rounded-md text-gray-400 hover:text-gray-500 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-indigo-500" aria-controls="mobile-menu" aria-expanded="false">
+                    <span class="sr-only">Open main menu</span>
+                    <i class="fas fa-bars h-6 w-6"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Mobile menu -->
+    <div class="md:hidden hidden" id="mobile-menu">
+        <div class="pt-2 pb-3 space-y-1">
+            <a href="{% url 'ecom:home' %}" class="{% if request.resolver_match.url_name == 'home' %}text-indigo-600 border-r-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} group flex items-center px-4 py-2 text-base font-medium">
+                <i class="fas fa-home mr-3 h-5 w-5 {% if request.resolver_match.url_name == 'home' %}text-indigo-600{% endif %}"></i>
+                <span>Home</span>
+            </a>
+            <a href="{% url 'ecom:product_list' %}" class="{% if 'product' in request.resolver_match.url_name %}text-indigo-600 border-r-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} group flex items-center px-4 py-2 text-base font-medium">
+                <i class="fas fa-box-open mr-3 h-5 w-5 {% if 'product' in request.resolver_match.url_name %}text-indigo-600{% endif %}"></i>
+                <span>Products</span>
+            </a>
+            <!-- <a href="#" class="{% if 'category' in request.resolver_match.url_name %}text-indigo-600 border-r-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} group flex items-center px-4 py-2 text-base font-medium">
+                <i class="fas fa-tags mr-3 h-5 w-5 {% if 'category' in request.resolver_match.url_name %}text-indigo-600{% endif %}"></i>
+                <span>Categories</span>
+            </a> -->
+            <!-- <a href="{% url 'ecom:about' %}" class="{% if request.resolver_match.url_name == 'about' %}text-indigo-600 border-r-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} group flex items-center px-4 py-2 text-base font-medium">
+                <i class="fas fa-info-circle mr-3 h-5 w-5 {% if request.resolver_match.url_name == 'about' %}text-indigo-600{% endif %}"></i>
+                <span>About</span>
+            </a> -->
+            <a href="{% url 'ecom:cart_detail' %}" class="{% if 'cart' in request.resolver_match.url_name %}text-indigo-600 border-r-2 border-indigo-500{% else %}text-gray-500 hover:text-gray-700{% endif %} group flex items-center px-4 py-2 text-base font-medium">
+                <i class="fas fa-shopping-cart mr-3 h-5 w-5 {% if 'cart' in request.resolver_match.url_name %}text-indigo-600{% endif %}"></i>
+                <span>Cart</span>
+                <span id="mobile-cart-count" class="ml-auto bg-indigo-600 text-white text-xs font-medium rounded-full h-5 w-5 flex items-center justify-center {% if not cart or cart.total_items == 0 %}hidden{% endif %}">
+                    {% if cart %}{{ cart.total_items }}{% else %}0{% endif %}
+                </span>
+            </a>
+            <a href="{% url 'ecom:login' %}" class="border-transparent text-gray-600 hover:bg-gray-50 hover:border-gray-300 hover:text-gray-800 block pl-3 pr-4 py-2 border-l-4 text-base font-medium">Sign in</a>
+        </div>
+        <div class="pt-4 pb-3 border-t border-gray-200">
+            <div class="flex items-center px-4">
+                <div class="flex-shrink-0">
+                    <div class="h-10 w-10 rounded-full bg-indigo-100 flex items-center justify-center">
+                        <i class="fas fa-user text-indigo-600"></i>
+                    </div>
+                </div>
+                <div class="ml-3">
+                    <div class="text-base font-medium text-gray-800">Guest User</div>
+                    <div class="text-sm font-medium text-gray-500">guest@example.com</div>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>

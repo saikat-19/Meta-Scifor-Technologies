@@ -1,0 +1,170 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Contact Us - ShopEase{% endblock %}
+
+{% block content %}
+<div class="bg-white py-16 px-4 overflow-hidden sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <div class="text-center">
+            <h1 class="text-4xl font-extrabold text-gray-900 sm:text-5xl sm:tracking-tight lg:text-6xl">
+                Contact Us
+            </h1>
+            <p class="mt-6 max-w-2xl mx-auto text-xl text-gray-500">
+                We'd love to hear from you. Send us a message and we'll respond as soon as possible.
+            </p>
+        </div>
+
+        <div class="mt-16">
+            <div class="grid grid-cols-1 gap-8 lg:grid-cols-2">
+                <!-- Contact Form -->
+                <div class="bg-white py-8 px-6 shadow rounded-lg sm:px-10">
+                    <form action="#" method="POST" class="space-y-6">
+                        {% csrf_token %}
+                        <div>
+                            <label for="name" class="block text-sm font-medium text-gray-700">Name</label>
+                            <div class="mt-1">
+                                <input type="text" name="name" id="name" autocomplete="name" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="email" class="block text-sm font-medium text-gray-700">Email</label>
+                            <div class="mt-1">
+                                <input id="email" name="email" type="email" autocomplete="email" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="subject" class="block text-sm font-medium text-gray-700">Subject</label>
+                            <div class="mt-1">
+                                <input type="text" name="subject" id="subject" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm">
+                            </div>
+                        </div>
+
+                        <div>
+                            <label for="message" class="block text-sm font-medium text-gray-700">Message</label>
+                            <div class="mt-1">
+                                <textarea id="message" name="message" rows="4" required
+                                    class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"></textarea>
+                            </div>
+                        </div>
+
+                        <div class="flex items-center">
+                            <button type="submit"
+                                class="w-full flex justify-center py-2 px-4 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Send Message
+                            </button>
+                        </div>
+                    </form>
+                </div>
+
+                <!-- Contact Information -->
+                <div class="space-y-8">
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-900">Contact Information</h3>
+                        <div class="mt-6 space-y-4">
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="h-6 w-6 text-indigo-600 fas fa-map-marker-alt"></i>
+                                </div>
+                                <div class="ml-3 text-base text-gray-500">
+                                    <p>123 E-Commerce Street</p>
+                                    <p>Tech City, TC 12345</p>
+                                    <p>United States</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="h-6 w-6 text-indigo-600 fas fa-phone-alt"></i>
+                                </div>
+                                <div class="ml-3 text-base text-gray-500">
+                                    <p>+1 (555) 123-4567</p>
+                                    <p>Mon - Fri, 9am - 5pm EST</p>
+                                </div>
+                            </div>
+                            <div class="flex">
+                                <div class="flex-shrink-0">
+                                    <i class="h-6 w-6 text-indigo-600 fas fa-envelope"></i>
+                                </div>
+                                <div class="ml-3 text-base text-gray-500">
+                                    <p>support@shopease.com</p>
+                                    <p>We'll respond within 24 hours</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="bg-white p-6 rounded-lg shadow">
+                        <h3 class="text-lg font-medium text-gray-900">Frequently Asked Questions</h3>
+                        <div class="mt-6 space-y-4">
+                            <div class="border-b border-gray-200 pb-4">
+                                <button class="flex justify-between w-full text-left text-sm font-medium text-indigo-600 focus:outline-none">
+                                    <span>What payment methods do you accept?</span>
+                                    <i class="fas fa-chevron-down text-indigo-400"></i>
+                                </button>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    We accept all major credit cards, PayPal, and bank transfers.
+                                </div>
+                            </div>
+                            <div class="border-b border-gray-200 pb-4">
+                                <button class="flex justify-between w-full text-left text-sm font-medium text-indigo-600 focus:outline-none">
+                                    <span>What is your return policy?</span>
+                                    <i class="fas fa-chevron-down text-indigo-400"></i>
+                                </button>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    You can return any item within 30 days of purchase for a full refund.
+                                </div>
+                            </div>
+                            <div class="border-b border-gray-200 pb-4">
+                                <button class="flex justify-between w-full text-left text-sm font-medium text-indigo-600 focus:outline-none">
+                                    <span>How can I track my order?</span>
+                                    <i class="fas fa-chevron-down text-indigo-400"></i>
+                                </button>
+                                <div class="mt-2 text-sm text-gray-500">
+                                    You'll receive a tracking number via email once your order ships.
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Map Section -->
+<div class="bg-gray-50 py-16 px-4 sm:px-6 lg:px-8">
+    <div class="max-w-7xl mx-auto">
+        <h2 class="text-2xl font-bold text-gray-900 mb-8">Find Us on the Map</h2>
+        <div class="bg-white p-4 rounded-lg shadow">
+            <!-- Placeholder for map - Replace with actual map embed code -->
+            <div class="aspect-w-16 aspect-h-9 bg-gray-200 rounded-lg flex items-center justify-center">
+                <div class="text-center p-8">
+                    <i class="fas fa-map-marked-alt text-4xl text-indigo-600 mb-4"></i>
+                    <p class="text-gray-600">123 E-Commerce Street, Tech City, TC 12345</p>
+                    <p class="text-sm text-gray-500 mt-2">(Map would be embedded here in production)</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- CTA Section -->
+<div class="bg-indigo-700">
+    <div class="max-w-2xl mx-auto text-center py-16 px-4 sm:py-20 sm:px-6 lg:px-8">
+        <h2 class="text-3xl font-extrabold text-white sm:text-4xl">
+            <span class="block">Still have questions?</span>
+            <span class="block">We're here to help.</span>
+        </h2>
+        <p class="mt-4 text-lg leading-6 text-indigo-200">
+            Our customer support team is available 24/7 to assist you with any questions or concerns.
+        </p>
+        <a href="#" class="mt-8 w-full inline-flex items-center justify-center px-5 py-3 border border-transparent text-base font-medium rounded-md text-indigo-600 bg-white hover:bg-indigo-50 sm:w-auto">
+            Visit Help Center
+        </a>
+    </div>
+</div>
+{% endblock %}

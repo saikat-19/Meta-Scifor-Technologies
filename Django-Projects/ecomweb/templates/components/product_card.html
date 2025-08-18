@@ -1,0 +1,90 @@
+{% load static %}
+<div class="group relative bg-white rounded-xl shadow-sm hover:shadow-lg transition-all duration-300 overflow-hidden border border-gray-100 flex flex-col h-full">
+    <!-- Badge (New/Stock Status) -->
+    {% if product.is_new %}
+    <div class="absolute top-3 right-3 z-10">
+        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+            New
+        </span>
+    </div>
+    {% endif %}
+    
+    <!-- Product Image -->
+    <div class="relative pt-[100%] w-full overflow-hidden bg-gray-50">
+        {% if product.images.exists %}
+            <a href="{% url 'ecom:product_detail' slug=product.slug %}" class="absolute inset-0">
+                <img src="{{ product.images.first.image.url }}" 
+                     alt="{{ product.name }}" 
+                     class="absolute inset-0 h-full w-full object-cover object-center transition-transform duration-700 group-hover:scale-110">
+            </a>
+        {% else %}
+            <a href="{% url 'ecom:product_detail' slug=product.slug %}" class="absolute inset-0 flex items-center justify-center bg-gradient-to-br from-gray-50 to-gray-100">
+                <i class="fas fa-image text-gray-300 text-5xl"></i>
+            </a>
+        {% endif %}
+        
+        <!-- Quick Actions (on hover) -->
+        <div class="absolute inset-0 bg-black bg-opacity-0 group-hover:bg-opacity-10 transition-all duration-300 flex items-center justify-center opacity-0 group-hover:opacity-100 space-x-2">
+            <a href="{% url 'ecom:product_detail' slug=product.slug %}" 
+               class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-gray-700 hover:bg-indigo-50 hover:text-indigo-600 transition-colors transform translate-y-2 group-hover:translate-y-0 duration-300"
+               title="Quick View">
+                <i class="far fa-eye"></i>
+            </a>
+            <form action="{% url 'ecom:cart_add' product_id=product.id %}" method="post" class="add-to-cart-form" data-product-id="{{ product.id }}">
+                {% csrf_token %}
+                <input type="hidden" name="quantity" value="1">
+                <button type="submit" 
+                        class="w-10 h-10 rounded-full bg-white shadow-md flex items-center justify-center text-indigo-600 hover:bg-indigo-50 hover:text-indigo-700 transition-colors transform translate-y-2 group-hover:translate-y-0 duration-300 delay-100"
+                        title="Add to Cart">
+                    <i class="fas fa-shopping-cart"></i>
+                </button>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Product Info -->
+    <div class="p-4 flex flex-col flex-grow">
+        <div class="mb-2">
+            <span class="inline-block px-2 py-0.5 text-xs font-medium rounded-full bg-indigo-50 text-indigo-700">
+                {{ product.category.name }}
+            </span>
+        </div>
+        
+        <h3 class="text-base font-semibold text-gray-900 line-clamp-2 mb-1.5">
+            <a href="{% url 'ecom:product_detail' slug=product.slug %}" class="hover:text-indigo-600 transition-colors">
+                {{ product.name }}
+            </a>
+        </h3>
+        
+        <div class="mt-auto pt-2">
+            <div class="flex items-center justify-between">
+                <div class="flex-1">
+                    <span class="text-xs text-gray-500">Starting from</span>
+                    <div class="flex items-center justify-between">
+                        <p class="text-lg font-bold text-gray-900">₹{{ product.price }}</p>
+                        <form action="{% url 'ecom:cart_add' product_id=product.id %}" method="post" class="add-to-cart-form" data-product-id="{{ product.id }}">
+                            {% csrf_token %}
+                            <input type="hidden" name="quantity" value="1">
+                            <button type="submit" class="text-indigo-600 hover:text-indigo-800 transition-colors" title="Add to Cart">
+                                <!-- <i class="fas fa-shopping-cart text-xl"></i> -->
+                                <i class="fa-solid fa-cart-plus text-xl"></i>
+                            </button>
+                        </form>
+                    </div>
+                </div>
+                {% if product.average_rating %}
+                <div class="flex items-center bg-indigo-50 px-2 py-1 rounded-full ml-2">
+                    <i class="fas fa-star text-yellow-400 text-xs mr-1"></i>
+                    <span class="text-xs font-medium text-gray-700">{{ product.average_rating|floatformat:1 }}</span>
+                </div>
+                {% endif %}
+            </div>
+            
+            <!-- View Button -->
+            <!-- <a href="{% url 'ecom:product_detail' slug=product.slug %}" 
+               class="mt-3 block w-full text-center bg-white border border-gray-200 rounded-lg py-2 px-3 text-sm font-medium text-gray-700 hover:bg-gray-50 transition-colors">
+                View Details
+            </a> -->
+        </div>
+    </div>
+</div>

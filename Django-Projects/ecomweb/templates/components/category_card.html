@@ -1,0 +1,22 @@
+{% if category %}
+<a href="{% if category.get_absolute_url %}{{ category.get_absolute_url }}{% else %}{% url 'ecom:product_list' %}?category={% if category.slug %}{{ category.slug }}{% else %}{{ category.name|slugify }}{% endif %}{% endif %}" 
+   class="group relative bg-white border border-gray-200 rounded-lg p-4 sm:p-6 focus-within:ring-2 focus-within:ring-indigo-500 focus-within:ring-offset-2 hover:border-gray-300 transition-all duration-200 hover:shadow-md">
+    <div class="rounded-lg overflow-hidden bg-gray-100 aspect-w-1 aspect-h-1 group-hover:opacity-90 flex items-center justify-center">
+        {% if category.image %}
+            <img src="{{ category.image.url }}" alt="{{ category.name }}" class="w-full h-full object-cover">
+        {% else %}
+            <div class="p-4 text-indigo-600">
+                <i class="{% if category.icon %}{{ category.icon }}{% else %}fas fa-tag{% endif %} text-5xl sm:text-6xl"></i>
+            </div>
+        {% endif %}
+    </div>
+    <div class="mt-4 text-center">
+        <h3 class="text-sm sm:text-base font-medium text-gray-900 group-hover:text-indigo-600 transition-colors">
+            {{ category.name }}
+        </h3>
+        {% if category.products_count %}
+            <p class="mt-1 text-xs text-gray-500">{{ category.products_count }} items</p>
+        {% endif %}
+    </div>
+</a>
+{% endif %}

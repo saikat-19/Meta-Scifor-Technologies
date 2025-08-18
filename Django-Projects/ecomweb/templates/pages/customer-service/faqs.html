@@ -1,0 +1,79 @@
+{% extends 'pages/customer-service/base.html' %}
+
+{% block page_title %}Frequently Asked Questions{% endblock %}
+{% block page_subtitle %}Find answers to common questions about our products and services{% endblock %}
+
+{% block customer_service_content %}
+<div class="space-y-8">
+    <div class="border-b border-gray-200 pb-6">
+        <h2>Ordering & Payment</h2>
+        
+        <div class="mt-6 space-y-4">
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">How do I place an order?</h3>
+                <p class="mt-2 text-gray-600">To place an order, simply browse our products, add items to your cart, and proceed to checkout. You'll need to provide shipping information and payment details to complete your purchase.</p>
+            </div>
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">What payment methods do you accept?</h3>
+                <p class="mt-2 text-gray-600">We accept all major credit and debit cards, PayPal, and bank transfers. All payments are processed securely through our payment gateway.</p>
+            </div>
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">Is it safe to use my credit card on your website?</h3>
+                <p class="mt-2 text-gray-600">Yes, your security is our priority. We use industry-standard SSL encryption to protect your payment information during transmission.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="border-b border-gray-200 pb-6">
+        <h2>Shipping & Delivery</h2>
+        
+        <div class="mt-6 space-y-4">
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">How long does shipping take?</h3>
+                <p class="mt-2 text-gray-600">Standard shipping typically takes 3-5 business days within the country. International shipping may take 7-14 business days depending on the destination.</p>
+            </div>
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">Do you ship internationally?</h3>
+                <p class="mt-2 text-gray-600">Yes, we ship to most countries worldwide. Shipping costs and delivery times vary by destination.</p>
+            </div>
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">How can I track my order?</h3>
+                <p class="mt-2 text-gray-600">Once your order ships, you'll receive a tracking number via email. You can use this number to track your package on our website or the carrier's website.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="pb-6">
+        <h2>Returns & Exchanges</h2>
+        
+        <div class="mt-6 space-y-4">
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">What is your return policy?</h3>
+                <p class="mt-2 text-gray-600">We offer a 30-day return policy for most items. Items must be in their original condition with all tags attached. Please see our full <a href="{% url 'ecom:return_policy' %}" class="text-indigo-600 hover:text-indigo-800">Return Policy</a> for details.</p>
+            </div>
+            
+            <div class="border-b border-gray-100 pb-4">
+                <h3 class="text-lg font-medium text-gray-900">How do I initiate a return?</h3>
+                <p class="mt-2 text-gray-600">To initiate a return, please log in to your account and go to the Order History section. Select the order containing the item you wish to return and follow the instructions. If you checked out as a guest, please contact our customer service for assistance.</p>
+            </div>
+            
+            <div>
+                <h3 class="text-lg font-medium text-gray-900">When will I receive my refund?</h3>
+                <p class="mt-2 text-gray-600">Once we receive your returned item, we will process your refund within 3-5 business days. The time it takes for the refund to appear in your account depends on your payment method and financial institution.</p>
+            </div>
+        </div>
+    </div>
+    
+    <div class="bg-indigo-50 p-6 rounded-lg mt-8">
+        <h3 class="text-lg font-medium text-gray-900 mb-4">Still have questions?</h3>
+        <p class="text-gray-600 mb-4">If you can't find the answer to your question here, our customer service team is happy to help.</p>
+        <a href="{% url 'ecom:contact' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+            Contact Us
+        </a>
+    </div>
+</div>
+{% endblock %}

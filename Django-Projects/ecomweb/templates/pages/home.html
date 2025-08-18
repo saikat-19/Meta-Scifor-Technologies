@@ -1,0 +1,93 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Welcome to ShopEase - Your One-Stop Shop{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+{% include 'components/hero.html' with secondary_link='#featured' %}
+
+
+{% if show_categories_section %}
+<!-- Featured Categories -->
+<section class="py-12 bg-gray-50" id="categories">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Shop by Category
+            </h2>
+            <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                Browse our wide range of product categories
+            </p>
+        </div>
+
+        <div class="mt-10 grid grid-cols-2 gap-6 sm:grid-cols-3 lg:grid-cols-4 xl:grid-cols-6">
+            {% for category in featured_categories %}
+                {% include 'components/category_card.html' with category=category %}
+            {% empty %}
+                {% for category in default_categories %}
+                    {% include 'components/category_card.html' with category=category %}
+                {% endfor %}
+            {% endfor %}
+        </div>
+        
+        {% if user.is_staff %}
+        <div class="mt-8 text-center">
+            <a href="{% url 'admin:ecom_category_add' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                <i class="fas fa-plus mr-2"></i>
+                Add New Category
+            </a>
+        </div>
+        {% endif %}
+    </div>
+</section>
+{% endif %}
+
+
+<!-- Featured Products -->
+<section class="py-12 bg-white" id="featured">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center">
+            <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                Featured Products
+            </h2>
+            <p class="mt-3 max-w-2xl mx-auto text-xl text-gray-500 sm:mt-4">
+                Check out our handpicked selection of featured products
+            </p>
+        </div>
+
+        <div class="mt-12 grid grid-cols-1 gap-8 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+            {% for product in featured_products %}
+                {% include 'components/product_card.html' with product=product %}
+            {% empty %}
+            <div class="col-span-4 text-center py-8">
+                <i class="fas fa-box-open text-4xl text-gray-400 mb-4"></i>
+                <h3 class="text-lg font-medium text-gray-900">No featured products available</h3>
+                <p class="mt-1 text-sm text-gray-500">Check back later for new arrivals!</p>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+{% include 'components/cta.html' %}
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Mobile menu toggle
+    document.addEventListener('DOMContentLoaded', function() {
+        const mobileMenuButton = document.querySelector('[aria-controls="mobile-menu"]');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton && mobileMenu) {
+            mobileMenuButton.addEventListener('click', function() {
+                const expanded = this.getAttribute('aria-expanded') === 'true' || false;
+                this.setAttribute('aria-expanded', !expanded);
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+    });
+</script>
+{% endblock %}

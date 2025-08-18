@@ -1,0 +1,124 @@
+<footer class="bg-gray-800 text-white">
+    <div class="max-w-7xl mx-auto py-12 px-4 sm:px-6 lg:px-8">
+        <!-- Main Footer Content -->
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">
+            <!-- About Section -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">About ShopEase</h3>
+                <p class="text-gray-300 text-sm">
+                    Your one-stop shop for all your needs. We offer high-quality products with fast delivery and excellent customer service.
+                </p>
+                <div class="mt-4 flex space-x-4">
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <i class="fab fa-facebook-f"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <i class="fab fa-twitter"></i>
+                    </a>
+                    <a href="#" class="text-gray-300 hover:text-white">
+                        <i class="fab fa-instagram"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- Quick Links -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Quick Links</h3>
+                <ul class="space-y-2">
+                    <li><a href="{% url 'ecom:home' %}" class="text-gray-300 hover:text-white text-sm">Home</a></li>
+                    <li><a href="{% url 'ecom:product_list' %}" class="text-gray-300 hover:text-white text-sm">Products</a></li>
+                    <li><a href="#" class="text-gray-300 hover:text-white text-sm">Categories</a></li>
+                    <li><a href="{% url 'ecom:about' %}" class="text-gray-300 hover:text-white text-sm">About Us</a></li>
+                    <li><a href="{% url 'ecom:contact' %}" class="text-gray-300 hover:text-white text-sm">Contact</a></li>
+                </ul>
+            </div>
+
+            <!-- Customer Service -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Customer Service</h3>
+                <ul class="space-y-2">
+                    <li><a href="{% url 'ecom:faqs' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                        <i class="fas fa-question-circle mr-2 w-4"></i> FAQs
+                    </a></li>
+                    <li><a href="{% url 'ecom:shipping_policy' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                        <i class="fas fa-truck mr-2 w-4"></i> Shipping Policy
+                    </a></li>
+                    <li><a href="{% url 'ecom:return_policy' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                        <i class="fas fa-undo-alt mr-2 w-4"></i> Return Policy
+                    </a></li>
+                    <li><a href="{% url 'ecom:privacy_policy' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                        <i class="fas fa-shield-alt mr-2 w-4"></i> Privacy Policy
+                    </a></li>
+                    <li><a href="{% url 'ecom:terms_conditions' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                        <i class="fas fa-file-contract mr-2 w-4"></i> Terms & Conditions
+                    </a></li>
+                    
+                    {% if user.is_authenticated %}
+                        {% if not user.is_seller and not user.is_moderator and not user.is_admin %}
+                        <li class="pt-2 mt-2 border-t border-gray-700">
+                            <span class="text-xs font-medium text-gray-400 uppercase tracking-wider">Apply for</span>
+                        </li>
+                        {% if not user.is_seller %}
+                        <li>
+                            <a href="{% url 'ecom:apply_seller' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                                <i class="fas fa-store mr-2 w-4 text-yellow-400"></i> Become a Seller
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% if not user.is_moderator and not user.is_admin %}
+                        <li>
+                            <a href="{% url 'ecom:apply_moderator' %}" class="text-gray-300 hover:text-white text-sm flex items-center">
+                                <i class="fas fa-user-shield mr-2 w-4 text-blue-400"></i> Become a Moderator
+                            </a>
+                        </li>
+                        {% endif %}
+                        {% endif %}
+                    {% endif %}
+                </ul>
+            </div>
+
+            <!-- Contact Info -->
+            <div>
+                <h3 class="text-lg font-semibold mb-4">Contact Us</h3>
+                <ul class="space-y-2 text-sm text-gray-300">
+                    <li class="flex items-start">
+                        <i class="fas fa-map-marker-alt mt-1 mr-2"></i>
+                        <span>123 E-Commerce St, Tech City, TC 12345</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-phone-alt mr-2"></i>
+                        <span>+1 (555) 123-4567</span>
+                    </li>
+                    <li class="flex items-center">
+                        <i class="fas fa-envelope mr-2"></i>
+                        <span>support@shopease.com</span>
+                    </li>
+                </ul>
+                
+                <!-- Newsletter Subscription -->
+                <div class="mt-4">
+                    <h4 class="font-medium mb-2">Subscribe to our newsletter</h4>
+                    <div class="flex">
+                        <input type="email" placeholder="Your email" class="px-3 py-2 text-gray-800 text-sm w-full rounded-l focus:outline-none">
+                        <button class="bg-indigo-600 hover:bg-indigo-700 px-4 py-2 rounded-r text-sm">
+                            <i class="fas fa-paper-plane"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Copyright -->
+        <div class="mt-12 pt-8 border-t border-gray-700">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <p class="text-sm text-gray-400">&copy; 2025 ShopEase. All rights reserved.</p>
+                <p class="text-sm text-gray-400">&copy; Saikat Ghosh [MST01-0153] - Demo Project</p>
+                <div class="flex space-x-6 mt-4 md:mt-0">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/visa/visa-original.svg" class="h-6" alt="Visa">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/mastercard/mastercard-original.svg" class="h-6" alt="Mastercard">
+                    <img src="https://cdn.jsdelivr.net/gh/devicons/devicon/icons/paypal/paypal-original.svg" class="h-6" alt="PayPal">
+                </div>
+            </div>
+        </div>
+    </div>
+</footer>

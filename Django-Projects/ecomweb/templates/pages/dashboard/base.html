@@ -1,0 +1,91 @@
+{% extends 'base/base.html' %}
+
+{% block title %}Dashboard - ShopEase{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gray-50">
+    <!-- Dashboard Header -->
+    <div class="bg-white shadow">
+        <div class="max-w-7xl mx-auto py-6 px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center">
+                <h1 class="text-2xl font-bold text-gray-900">Dashboard</h1>
+                <div class="text-sm text-gray-500">
+                    {% if user.is_authenticated %}
+                        Logged in as <span class="font-medium text-indigo-600">{{ user.get_full_name|default:user.email }}</span>
+                        <span class="mx-2">•</span>
+                        <span class="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-indigo-100 text-indigo-800">
+                            {{ user.get_role_display }}
+                        </span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main Content -->
+    <div class="max-w-7xl mx-auto py-6 sm:px-6 lg:px-8">
+        <!-- Dashboard Navigation -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg mb-6">
+            <nav class="flex overflow-x-auto">
+                <div class="flex-1 flex items-center justify-between px-4 sm:px-6">
+                    <div class="flex space-x-8">
+                        {% url 'ecom:dashboard' as dashboard_url %}
+                        <a href="{{ dashboard_url }}" 
+                           class="{% if request.path == dashboard_url %}border-indigo-500 text-gray-900{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Overview
+                        </a>
+                        
+                        {% if user.is_seller or user.is_admin %}
+                        {% url 'ecom:seller_products' as seller_products_url %}
+                        <a href="{{ seller_products_url }}" 
+                           class="{% if request.path == seller_products_url %}border-indigo-500 text-gray-900{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Products Management
+                        </a>
+                        {% endif %}
+                        
+                        {% if user.is_admin or user.is_moderator %}
+                        {% url 'ecom:pending_approvals' as pending_approvals_url %}
+                        <a href="{{ pending_approvals_url }}" 
+                           class="{% if request.path == pending_approvals_url %}border-indigo-500 text-gray-900{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Pending Approvals
+                            {% with pending_count=user.get_pending_approvals_count %}
+                                {% if pending_count %}
+                                <span class="ml-2 inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-red-100 text-red-800">
+                                    {{ pending_count }}
+                                </span>
+                                {% endif %}
+                            {% endwith %}
+                        </a>
+                        {% endif %}
+                        
+                        {% if user.is_seller or user.is_admin %}
+                        {% url 'ecom:seller_orders' as seller_orders_url %}
+                        <a href="{{ seller_orders_url }}" 
+                           class="{% if request.path == seller_orders_url %}border-indigo-500 text-gray-900{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            Orders Management
+                        </a>
+                        {% endif %}
+                        
+                        {% if user.is_admin %}
+                        {% url 'ecom:admin_user_management' as admin_user_management_url %}
+                        <a href="{{ admin_user_management_url }}" 
+                           class="{% if request.path == admin_user_management_url %}border-indigo-500 text-gray-900{% else %}border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300{% endif %} whitespace-nowrap py-4 px-1 border-b-2 font-medium text-sm">
+                            User Management
+                        </a>
+                        {% endif %}
+                    </div>
+                </div>
+            </nav>
+        </div>
+
+        <!-- Dashboard Content -->
+        <div class="bg-white shadow overflow-hidden sm:rounded-lg">
+            <div class="px-4 py-5 sm:p-6">
+                {% block dashboard_content %}
+                <!-- Content will be overridden by child templates -->
+                {% endblock %}
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

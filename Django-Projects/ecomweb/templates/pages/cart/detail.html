@@ -1,0 +1,204 @@
+{% extends 'base/base.html' %}
+{% load static %}
+
+{% block title %}Your Shopping Cart - ShopEase{% endblock %}
+
+{% block content %}
+<div class="bg-white">
+    <div class="max-w-7xl mx-auto py-8 px-4 sm:px-6 lg:px-8">
+        <div class="flex justify-between items-center mb-8">
+            <h1 class="text-2xl font-bold text-gray-900">Your Shopping Cart</h1>
+            <a href="{% url 'ecom:product_list' %}" class="text-indigo-600 hover:text-indigo-500 text-sm font-medium">
+                ← Continue Shopping
+            </a>
+        </div>
+        
+        {% if cart.items.exists %}
+            <div class="lg:grid lg:grid-cols-12 lg:gap-8">
+                <!-- Cart items -->
+                <div class="lg:col-span-8">
+                    <div class="hidden md:grid grid-cols-12 gap-4 mb-4 text-sm text-gray-500 font-medium">
+                        <div class="col-span-6">Product</div>
+                        <div class="col-span-2 text-center">Price</div>
+                        <div class="col-span-3 text-center">Quantity</div>
+                        <div class="col-span-1 text-right">Total</div>
+                    </div>
+                    
+                    <div class="divide-y divide-gray-200">
+                        {% for item in cart.items.all %}
+                            <div class="py-6 grid grid-cols-1 md:grid-cols-12 gap-4 items-center" id="cart-item-{{ item.id }}">
+                                <div class="md:col-span-6 flex items-center">
+                                    <div class="flex-shrink-0 w-20 h-20 border border-gray-200 rounded-md overflow-hidden">
+                                        {% if item.product.images.first %}
+                                            <img src="{{ item.product.images.first.image.url }}" 
+                                                 alt="{{ item.product.name }}"
+                                                 class="w-full h-full object-cover">
+                                        {% else %}
+                                            <div class="w-full h-full bg-gray-100 flex items-center justify-center">
+                                                <svg class="h-8 w-8 text-gray-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                                                </svg>
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="ml-4">
+                                        <h3 class="text-sm font-medium text-gray-900">
+                                            <a href="{% url 'ecom:product_detail' slug=item.product.slug %}" class="hover:text-indigo-600">
+                                                {{ item.product.name }}
+                                            </a>
+                                        </h3>
+                                        {% if item.product.category %}
+                                            <p class="mt-1 text-xs text-gray-500">
+                                                {{ item.product.category.name }}
+                                            </p>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="md:col-span-2 text-sm text-gray-900 text-center">
+                                    <span class="md:hidden text-xs text-gray-500 mr-1">Price:</span>
+                                    ₹{{ item.unit_price|floatformat:2 }}
+                                </div>
+                                
+                                <div class="md:col-span-3">
+                                    <form action="{% url 'ecom:cart_update' item_id=item.id %}" method="post" class="flex items-center justify-center">
+                                        {% csrf_token %}
+                                        <div class="relative flex items-center" data-item-id="{{ item.id }}" data-max-quantity="{{ item.product.stock }}">
+                                            <button type="button" class="decrement-btn bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-l h-9 w-9 flex items-center justify-center hover:bg-indigo-100 focus:outline-none transition-colors duration-200">
+                                                <i class="fas fa-minus text-xs"></i>
+                                            </button>
+                                            <input type="number" 
+                                                   id="quantity-{{ item.id }}" 
+                                                   name="quantity" 
+                                                   value="{{ item.quantity }}" 
+                                                   min="1" 
+                                                   max="{{ item.product.stock }}" 
+                                                   class="quantity-input w-14 h-9 text-center border-t border-b border-indigo-200 focus:ring-1 focus:ring-indigo-500 focus:border-indigo-500 mx-1"
+                                                   data-update-form="true">
+                                            <button type="button" class="increment-btn bg-indigo-50 text-indigo-700 border border-indigo-200 rounded-r h-9 w-9 flex items-center justify-center hover:bg-indigo-100 focus:outline-none transition-colors duration-200">
+                                                <i class="fas fa-plus text-xs"></i>
+                                            </button>
+                                        </div>
+                                    </form>
+                                </div>
+                                
+                                <div class="md:col-span-1 flex items-center justify-end">
+                                    <div class="text-right">
+                                        <p class="text-sm font-medium text-gray-900">₹{{ item.total_price|floatformat:2 }}</p>
+                                        <form action="{% url 'ecom:cart_remove' item_id=item.id %}" method="post" class="mt-1">
+                                            {% csrf_token %}
+                                            <button type="submit" class="text-xs text-red-600 hover:text-red-500">
+                                                Remove
+                                            </button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </div>
+
+                <!-- Order summary -->
+                <div class="mt-8 lg:mt-0 lg:col-span-4">
+                    <div class="bg-gray-50 rounded-lg p-6">
+                        <h2 class="text-lg font-medium text-gray-900 mb-4">Order Summary</h2>
+                        <div class="space-y-4">
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Subtotal</span>
+                                <span class="font-medium text-gray-900">₹{{ cart.subtotal|floatformat:2 }}</span>
+                            </div>
+                            <div class="flex justify-between text-sm">
+                                <span class="text-gray-600">Shipping</span>
+                                <span class="font-medium text-gray-900">₹{{ cart.shipping_cost|floatformat:2 }}</span>
+                            </div>
+                            <div class="border-t border-gray-200 pt-4">
+                                <div class="flex justify-between text-base font-medium">
+                                    <span>Total</span>
+                                    <span>₹{{ cart.total|floatformat:2 }}</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="mt-6">
+                            <a href="{% url 'ecom:checkout' %}" class="w-full flex justify-center items-center px-6 py-3 border border-transparent rounded-md shadow-sm text-base font-medium text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                                Proceed to Checkout
+                            </a>
+                        </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        {% else %}
+            <div class="text-center py-12">
+                <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"></path>
+                </svg>
+                <h3 class="mt-2 text-sm font-medium text-gray-900">Your cart is empty</h3>
+                <p class="mt-1 text-sm text-gray-500">Start shopping to add items to your cart.</p>
+                <div class="mt-6">
+                    <a href="{% url 'ecom:product_list' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                        Continue Shopping
+                    </a>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize quantity controls
+document.addEventListener('DOMContentLoaded', function() {
+    // Handle increment button clicks
+    document.querySelectorAll('.increment-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const container = this.closest('[data-item-id]');
+            const input = container.querySelector('.quantity-input');
+            const max = parseInt(container.getAttribute('data-max-quantity'));
+            
+            if (parseInt(input.value) < max) {
+                input.value = parseInt(input.value) + 1;
+                submitQuantityForm(input);
+            }
+        });
+    });
+
+    // Handle decrement button clicks
+    document.querySelectorAll('.decrement-btn').forEach(function(btn) {
+        btn.addEventListener('click', function() {
+            const input = this.closest('[data-item-id]').querySelector('.quantity-input');
+            
+            if (parseInt(input.value) > 1) {
+                input.value = parseInt(input.value) - 1;
+                submitQuantityForm(input);
+            }
+        });
+    });
+
+    // Auto-submit form when quantity changes
+    document.querySelectorAll('input[data-update-form]').forEach(function(input) {
+        input.addEventListener('change', function() {
+            submitQuantityForm(this);
+        });
+    });
+
+    function submitQuantityForm(input) {
+        const form = input.closest('form');
+        if (form) {
+            form.requestSubmit();
+        }
+    }
+
+    // Update cart count in the header when the page loads
+    fetch('{% url "ecom:cart_count" %}')
+        .then(response => response.json())
+        .then(data => {
+            const cartCount = document.getElementById('cart-count');
+            if (cartCount) {
+                cartCount.textContent = data.count;
+                cartCount.classList.toggle('hidden', data.count === 0);
+            }
+        });
+});
+</script>
+{% endblock %}

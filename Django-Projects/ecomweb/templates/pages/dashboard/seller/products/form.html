@@ -1,0 +1,259 @@
+{% extends 'pages/dashboard/base.html' %}
+
+{% block dashboard_content %}
+<div class="bg-white shadow rounded-lg p-6">
+    <div class="mb-6">
+        <h2 class="text-2xl font-semibold text-gray-800">
+            {% if form.instance.pk %}Edit Product{% else %}Add New Product{% endif %}
+        </h2>
+        <p class="mt-1 text-sm text-gray-500">
+            {% if form.instance.pk %}
+                Update your product details below.
+            {% else %}
+                Fill in the details below to add a new product to your store.
+            {% endif %}
+        </p>
+    </div>
+
+    <form method="post" enctype="multipart/form-data" class="space-y-6">
+        {% csrf_token %}
+        
+        {% if form.non_field_errors %}
+        <div class="bg-red-50 border-l-4 border-red-400 p-4 mb-6">
+            <div class="flex">
+                <div class="flex-shrink-0">
+                    <i class="fas fa-exclamation-circle text-red-400"></i>
+                </div>
+                <div class="ml-3">
+                    <p class="text-sm text-red-700">
+                        {% for error in form.non_field_errors %}
+                            {{ error }}
+                        {% endfor %}
+                    </p>
+                </div>
+            </div>
+        </div>
+        {% endif %}
+
+        <!-- Basic Information -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Basic Information</h3>
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <!-- Name -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.name.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.name.label }} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="mt-1">
+                        {{ form.name }}
+                        {% if form.name.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.name.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Description -->
+                <div class="sm:col-span-6">
+                    <label for="{{ form.description.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.description.label }}
+                    </label>
+                    <div class="mt-1">
+                        {{ form.description }}
+                        {% if form.description.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.description.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Category -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.category.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.category.label }} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="mt-1">
+                        {{ form.category }}
+                        {% if form.category.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.category.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- SKU -->
+                <!-- <div class="sm:col-span-3">
+                    <label for="{{ form.sku.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.sku.label }} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="mt-1">
+                        {{ form.sku }}
+                        {% if form.sku.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.sku.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div> -->
+            </div>
+        </div>
+
+        <!-- Pricing -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Pricing</h3>
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <!-- Price -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.price.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.price.label }} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">₹</span>
+                        </div>
+                        {{ form.price }}
+                    </div>
+                    {% if form.price.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.price.errors.0 }}</p>
+                    {% endif %}
+                </div>
+
+                <!-- Compare at Price -->
+                <div class="sm:col-span-3">
+                    <label for="{{ form.compare_at_price.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.compare_at_price.label }}
+                    </label>
+                    <div class="mt-1 relative rounded-md shadow-sm">
+                        <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            <span class="text-gray-500 sm:text-sm">₹</span>
+                        </div>
+                        {{ form.compare_at_price }}
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">Original price to show when discounted</p>
+                    {% if form.compare_at_price.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.compare_at_price.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Inventory</h3>
+            <div class="grid grid-cols-1 gap-y-6 gap-x-4 sm:grid-cols-6">
+                <!-- Stock -->
+                <div class="sm:col-span-2">
+                    <label for="{{ form.stock.id_for_label }}" class="block text-sm font-medium text-gray-700">
+                        {{ form.stock.label }} <span class="text-red-500">*</span>
+                    </label>
+                    <div class="mt-1">
+                        {{ form.stock }}
+                        {% if form.stock.errors %}
+                            <p class="mt-2 text-sm text-red-600">{{ form.stock.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+
+                <!-- Status -->
+                <div class="sm:col-span-4">
+                    <label class="block text-sm font-medium text-gray-700 mb-1">Status</label>
+                    <div class="mt-1 flex items-center">
+                        {{ form.is_active }}
+                        <label for="{{ form.is_active.id_for_label }}" class="ml-2 block text-sm text-gray-700">
+                            Active (visible to customers)
+                        </label>
+                    </div>
+                    {% if form.is_active.errors %}
+                        <p class="mt-2 text-sm text-red-600">{{ form.is_active.errors.0 }}</p>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Images -->
+        <div class="bg-white shadow rounded-lg p-6">
+            <h3 class="text-lg font-medium text-gray-900 mb-4">Images</h3>
+            <div class="space-y-4">
+                <!-- Main Image -->
+                <div>
+                    <label class="block text-sm font-medium text-gray-700 mb-2">
+                        Product Images
+                    </label>
+                    <div class="mt-1 flex items-center">
+                        <input type="file" name="images" multiple accept="image/*" 
+                               class="block w-full text-sm text-gray-500
+                                      file:mr-4 file:py-2 file:px-4
+                                      file:rounded-md file:border-0
+                                      file:text-sm file:font-semibold
+                                      file:bg-indigo-50 file:text-indigo-700
+                                      hover:file:bg-indigo-100">
+                    </div>
+                    <p class="mt-1 text-xs text-gray-500">
+                        Upload one or more images. The first image will be used as the main product image.
+                    </p>
+                </div>
+
+                <!-- Existing Images -->
+                {% if form.instance.pk and form.instance.images.exists %}
+                <div class="mt-6">
+                    <h4 class="text-sm font-medium text-gray-700 mb-3">Current Images</h4>
+                    <div class="grid grid-cols-2 gap-4 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-6">
+                        {% for image in form.instance.images.all %}
+                        <div class="relative group">
+                            <img src="{{ image.image.url }}" alt="{{ image.alt_text }}" 
+                                 class="h-32 w-full object-cover rounded-lg">
+                            <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-opacity rounded-lg">
+                                <button type="button" 
+                                        class="text-white bg-red-600 hover:bg-red-700 rounded-full p-2"
+                                        onclick="return confirm('Are you sure you want to delete this image?')">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                            {% if forloop.first %}
+                            <span class="absolute top-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                Main
+                            </span>
+                            {% endif %}
+                        </div>
+                        {% endfor %}
+                    </div>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Form Actions -->
+        <div class="flex justify-end space-x-3 pt-4">
+            <a href="{% if form.instance.pk %}{% url 'ecom:product_detail' form.instance.slug %}{% else %}{% url 'ecom:seller_products' %}{% endif %}" 
+               class="bg-white py-2 px-4 border border-gray-300 rounded-md shadow-sm text-sm font-medium text-gray-700 hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Cancel
+            </a>
+            <button type="submit" 
+                    class="inline-flex justify-center py-2 px-4 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                {% if form.instance.pk %}Update Product{% else %}Add Product{% endif %}
+            </button>
+        </div>
+    </form>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+// Initialize form elements with Tailwind classes
+function initFormElements() {
+    // Text inputs, textareas, and selects
+    const inputs = document.querySelectorAll('input[type="text"], input[type="number"], textarea, select');
+    inputs.forEach(input => {
+        input.classList.add('block', 'w-full', 'rounded-md', 'border-gray-300', 'shadow-sm', 
+                          'focus:border-indigo-500', 'focus:ring-indigo-500', 'sm:text-sm');
+        if (input.tagName === 'SELECT') {
+            input.classList.add('mt-1');
+        }
+    });
+
+    // Checkbox
+    const checkbox = document.querySelector('input[type="checkbox"]');
+    if (checkbox) {
+        checkbox.classList.add('h-4', 'w-4', 'text-indigo-600', 'focus:ring-indigo-500', 'border-gray-300', 'rounded');
+    }
+}
+
+// Run when the document is ready
+document.addEventListener('DOMContentLoaded', initFormElements);
+</script>
+{% endblock %}
