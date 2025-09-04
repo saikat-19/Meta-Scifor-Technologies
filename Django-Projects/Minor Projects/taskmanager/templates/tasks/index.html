@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}My Tasks - Task Manager{% endblock %}
+
+{% block content %}
+<div class="space-y-6 lg:space-y-0 lg:flex lg:gap-2 w-full">
+    <!-- Active Tasks Section -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg flex flex-col w-full lg:w-[49.8%] lg:ml-[0.2%]">
+        <div class="px-5 py-3 sm:px-6 border-b border-gray-200 bg-indigo-600">
+            <h2 class="text-base font-semibold text-white flex items-center justify-center">
+                <span class="px-4 py-1 bg-white/20 rounded-full inline-flex items-center">
+                    <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                    My Tasks
+                    <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-white/30 text-white rounded-full">
+                        {{ active_tasks_count|default:0 }}
+                    </span>
+                </span>
+            </h2>
+        </div>
+        
+        {% if active_tasks %}
+            <ul class="divide-y divide-gray-200 flex-1 overflow-y-auto p-4 sm:p-5">
+                {% for task in active_tasks %}
+                    {% include 'partials/task_item.html' with task=task %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% with message="No active tasks. Add one above!" %}
+                {% include 'partials/empty_state.html' %}
+            {% endwith %}
+        {% endif %}
+    </div>
+
+    <!-- Completed Tasks Section -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg flex flex-col w-full lg:w-[49.8%] lg:mr-[0.2%]">
+        <div class="px-5 py-3 sm:px-6 border-b border-gray-200 bg-green-600">
+            <h2 class="text-base font-semibold text-white flex items-center justify-center">
+                <span class="px-4 py-1 bg-white/20 rounded-full inline-flex items-center">
+                    <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                    Completed
+                    <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-white/30 text-white rounded-full">
+                        {{ completed_tasks_count|default:0 }}
+                    </span>
+                </span>
+            </h2>
+        </div>
+        
+        {% if completed_tasks %}
+            <ul class="divide-y divide-gray-200 flex-1 overflow-y-auto p-4 sm:p-5">
+                {% for task in completed_tasks %}
+                    {% include 'partials/task_item.html' with task=task %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% with message="No completed tasks yet." %}
+                {% include 'partials/empty_state.html' %}
+            {% endwith %}
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
