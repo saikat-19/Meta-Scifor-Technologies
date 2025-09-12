@@ -1,0 +1,62 @@
+<!-- SweetAlert Toast Messages -->
+{% if messages %}
+{% for message in messages %}
+<script>
+(function() {
+    'use strict';
+    
+    if (typeof Swal === 'undefined') {
+        console.warn('SweetAlert2 not loaded');
+        return;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var Toast = Swal.mixin({
+            toast: true,
+            position: 'top-end',
+            showConfirmButton: false,
+            timer: 3000,
+            timerProgressBar: true,
+            didOpen: function(toast) {
+                toast.addEventListener('mouseenter', Swal.stopTimer);
+                toast.addEventListener('mouseleave', Swal.resumeTimer);
+            }
+        });
+        
+        var messageType = '{{ message.tags|default:"success" }}';
+        var messageText = '{{ message|escapejs }}';
+        var icon, background, color;
+        
+        switch(messageType) {
+            case 'error':
+                icon = 'error';
+                background = '#FEF2F2';
+                color = '#DC2626';
+                break;
+            case 'warning':
+                icon = 'warning';
+                background = '#FFFBEB';
+                color = '#D97706';
+                break;
+            case 'info':
+                icon = 'info';
+                background = '#EFF6FF';
+                color = '#2563EB';
+                break;
+            default:
+                icon = 'success';
+                background = '#F0FDF4';
+                color = '#059669';
+        }
+        
+        Toast.fire({
+            icon: icon,
+            title: messageText,
+            background: background,
+            color: color
+        });
+    });
+})();
+</script>
+{% endfor %}
+{% endif %}

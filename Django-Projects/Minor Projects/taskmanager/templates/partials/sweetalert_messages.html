@@ -1,0 +1,64 @@
+<!-- SweetAlert Messages -->
+{% if messages %}
+{% for message in messages %}
+<script>
+(function() {
+    'use strict';
+    
+    if (typeof Swal === 'undefined') {
+        console.warn('SweetAlert2 not loaded');
+        return;
+    }
+    
+    document.addEventListener('DOMContentLoaded', function() {
+        var messageType = '{{ message.tags|default:"success" }}';
+        var messageText = '{{ message|escapejs }}';
+        var icon, title, confirmButtonColor, confirmButtonText, timer;
+        
+        switch(messageType) {
+            case 'error':
+                icon = 'error';
+                title = 'Error';
+                confirmButtonColor = '#EF4444';
+                confirmButtonText = 'OK';
+                timer = 5000;
+                break;
+            case 'warning':
+                icon = 'warning';
+                title = 'Warning';
+                confirmButtonColor = '#F59E0B';
+                confirmButtonText = 'OK';
+                timer = 4000;
+                break;
+            case 'info':
+                icon = 'info';
+                title = 'Information';
+                confirmButtonColor = '#3B82F6';
+                confirmButtonText = 'OK';
+                timer = 4000;
+                break;
+            default:
+                icon = 'success';
+                title = 'Success';
+                confirmButtonColor = '#10B981';
+                confirmButtonText = 'Great!';
+                timer = 3000;
+        }
+        
+        Swal.fire({
+            icon: icon,
+            title: title,
+            text: messageText,
+            confirmButtonColor: confirmButtonColor,
+            confirmButtonText: confirmButtonText,
+            timer: timer,
+            timerProgressBar: true,
+            showCloseButton: true,
+            toast: false,
+            position: 'center'
+        });
+    });
+})();
+</script>
+{% endfor %}
+{% endif %}

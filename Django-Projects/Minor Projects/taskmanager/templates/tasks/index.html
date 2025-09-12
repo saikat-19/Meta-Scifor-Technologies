@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}My Tasks - Task Manager{% endblock %}
+
+{% block content %}
+{% if user.is_authenticated %}
+<div class="space-y-6 lg:space-y-0 lg:flex lg:gap-2 w-full">
+    <!-- Active Tasks Section -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg flex flex-col w-full lg:w-[49.8%] lg:ml-[0.2%]">
+        <div class="px-5 py-3 sm:px-6 border-b border-gray-200 bg-indigo-600">
+            <h2 class="text-base font-semibold text-white flex items-center justify-center">
+                <span class="px-4 py-1 bg-white/20 rounded-full inline-flex items-center">
+                    <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                    My Tasks
+                    <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-white/30 text-white rounded-full">
+                        {{ active_tasks_count|default:0 }}
+                    </span>
+                </span>
+            </h2>
+        </div>
+        
+        {% if active_tasks %}
+            <ul class="divide-y divide-gray-200 flex-1 overflow-y-auto p-4 sm:p-5">
+                {% for task in active_tasks %}
+                    {% include 'partials/task_item.html' with task=task %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% with message="No active tasks. Add one above!" %}
+                {% include 'partials/empty_state.html' %}
+            {% endwith %}
+        {% endif %}
+    </div>
+
+    <!-- Completed Tasks Section -->
+    <div class="bg-white shadow overflow-hidden sm:rounded-lg flex flex-col w-full lg:w-[49.8%] lg:mr-[0.2%]">
+        <div class="px-5 py-3 sm:px-6 border-b border-gray-200 bg-green-600">
+            <h2 class="text-base font-semibold text-white flex items-center justify-center">
+                <span class="px-4 py-1 bg-white/20 rounded-full inline-flex items-center">
+                    <span class="w-2 h-2 bg-white rounded-full mr-2"></span>
+                    Completed
+                    <span class="ml-2 px-2 py-0.5 text-xs font-medium bg-white/30 text-white rounded-full">
+                        {{ completed_tasks_count|default:0 }}
+                    </span>
+                </span>
+            </h2>
+        </div>
+        
+        {% if completed_tasks %}
+            <ul class="divide-y divide-gray-200 flex-1 overflow-y-auto p-4 sm:p-5">
+                {% for task in completed_tasks %}
+                    {% include 'partials/task_item.html' with task=task %}
+                {% endfor %}
+            </ul>
+        {% else %}
+            {% with message="No completed tasks yet." %}
+                {% include 'partials/empty_state.html' %}
+            {% endwith %}
+        {% endif %}
+    </div>
+</div>
+{% else %}
+<div class="max-w-md mx-auto bg-white rounded-lg shadow-md overflow-hidden">
+    <div class="px-6 py-8 text-center">
+        <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+        </svg>
+        <h2 class="mt-4 text-xl font-semibold text-gray-900">Welcome to Task Manager</h2>
+        <p class="mt-2 text-gray-600">Please sign in to manage your tasks</p>
+        <div class="mt-6 space-x-4">
+            <a href="{% url 'tasks:login' %}" class="inline-flex items-center px-4 py-2 border border-transparent text-sm font-medium rounded-md shadow-sm text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Sign In
+            </a>
+            <a href="{% url 'tasks:register' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 text-sm font-medium rounded-md text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500">
+                Sign Up
+            </a>
+        </div>
+    </div>
+</div>
+{% endif %}
+{% endblock %}
