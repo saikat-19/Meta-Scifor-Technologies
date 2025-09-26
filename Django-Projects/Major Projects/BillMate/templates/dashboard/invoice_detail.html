@@ -288,13 +288,26 @@
     <!-- Invoice Header -->
     <div class="print-header">
         <div class="print-logo-section">
-            <h1>{{ profile.company_name }}</h1>
+            <h1>{{ user.profile.company_name|default:user.get_full_name|default:user.username }}</h1>
             <div class="print-company-info">
-                {{ profile.address }}<br>
-                {{ profile.city }}, {{ profile.state }} {{ profile.postal_code }}<br>
-                {{ profile.country }}<br>
-                Phone: {{ profile.phone }}<br>
-                Email: {{ profile.email }}
+                {% if user.profile %}
+                    {{ user.profile.address|default:'' }}<br>
+                    {% if user.profile.city or user.profile.state or user.profile.postal_code %}
+                        {{ user.profile.city|default:'' }}{% if user.profile.city and user.profile.state %}, {% endif %}
+                        {{ user.profile.state|default:'' }}
+                        {{ user.profile.postal_code|default:'' }}<br>
+                    {% endif %}
+                    {{ user.profile.country|default:'' }}<br>
+                    {% if user.profile.phone %}
+                        Phone: {{ user.profile.phone }}<br>
+                    {% endif %}
+                    Email: {{ user.email }}
+                    {% if user.profile.website %}
+                        <br>Website: <a href="{{ user.profile.website }}" target="_blank">{{ user.profile.website }}</a>
+                    {% endif %}
+                {% else %}
+                    {{ user.email }}
+                {% endif %}
             </div>
         </div>
         <div class="print-invoice-title">
@@ -384,10 +397,14 @@
     <div class="print-footer">
         <div class="print-thank-you">THANK YOU</div>
         <div class="print-footer-text">
-            Please make check payable to {{ profile.company_name }}.<br>
+            Please make check payable to {{ user.profile.company_name|default:user.get_full_name|default:user.username }}.<br>
             For questions concerning this invoice, please contact<br>
-            {{ profile.phone }}, {{ profile.email }}<br><br>
-            {% if profile.website %}{{ profile.website }}{% else %}{{ profile.company_name }}{% endif %}
+            {% if user.profile and user.profile.phone %}{{ user.profile.phone }}, {% endif %}{{ user.email }}<br><br>
+            {% if user.profile and user.profile.website %}
+                <a href="{{ user.profile.website }}" target="_blank">{{ user.profile.website }}</a>
+            {% else %}
+                {{ user.profile.company_name|default:user.get_full_name|default:user.username }}
+            {% endif %}
         </div>
     </div>
 </div>
