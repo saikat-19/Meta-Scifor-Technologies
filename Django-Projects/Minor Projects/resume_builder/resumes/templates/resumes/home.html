@@ -1,0 +1,167 @@
+{% extends 'resumes/base.html' %}
+
+{% block content %}
+<!-- Hero Section -->
+<section class="py-16 md:py-24 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
+            <div class="text-center md:text-left">
+                <h1 class="text-4xl md:text-5xl font-bold leading-tight mb-6">
+                    Create Your Professional Resume in Minutes
+                </h1>
+                <p class="text-xl mb-8 text-blue-100">
+                    Build a professional resume that stands out from the crowd. Our easy-to-use resume builder helps you create a perfect resume that gets you hired faster.
+                </p>
+                <div class="flex flex-col sm:flex-row gap-4 justify-center md:justify-start">
+                    <a href="{% url 'resumes:resume_create' %}" class="bg-white text-primary font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition duration-300 text-center">
+                        Create My Resume <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                    <a href="#templates" class="bg-transparent border-2 border-white text-white font-semibold px-8 py-4 rounded-lg hover:bg-white hover:bg-opacity-10 transition duration-300 text-center">
+                        View Templates
+                    </a>
+                </div>
+            </div>
+            <div class="hidden md:block">
+                <div class="bg-white p-2 rounded-lg shadow-2xl transform rotate-3 hover:rotate-0 transition duration-500">
+                    <div class="bg-gray-100 p-4 rounded">
+                        <div class="bg-white p-6 rounded shadow-inner">
+                            <div class="flex items-center mb-6">
+                                <div class="w-16 h-16 bg-gray-300 rounded-full mr-4"></div>
+                                <div>
+                                    <h3 class="text-xl font-bold text-gray-800">John Doe</h3>
+                                    <p class="text-gray-600">Senior Web Developer</p>
+                                </div>
+                            </div>
+                            <div class="space-y-4">
+                                <div class="h-4 bg-gray-200 rounded w-3/4"></div>
+                                <div class="h-4 bg-gray-200 rounded w-1/2"></div>
+                                <div class="h-4 bg-gray-200 rounded w-5/6"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Features Section -->
+<section id="features" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Why Choose Our Resume Builder?</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Everything you need to create a professional resume that gets you hired.</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Feature 1 -->
+            <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-magic text-2xl text-primary"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center">Easy to Use</h3>
+                <p class="text-gray-600 text-center">Our intuitive interface makes it simple to create a professional resume in minutes, even if you've never made one before.</p>
+            </div>
+            
+            <!-- Feature 2 -->
+            <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-palette text-2xl text-primary"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center">Beautiful Template</h3>
+                <p class="text-gray-600 text-center">Our professionally designed Modern template is ATS-friendly and optimized for success.</p>
+            </div>
+            
+            <!-- Feature 3 -->
+            <div class="bg-gray-50 p-8 rounded-xl hover:shadow-lg transition duration-300">
+                <div class="w-16 h-16 bg-blue-100 rounded-full flex items-center justify-center mb-6 mx-auto">
+                    <i class="fas fa-mobile-alt text-2xl text-primary"></i>
+                </div>
+                <h3 class="text-xl font-semibold mb-3 text-center">Mobile Friendly</h3>
+                <p class="text-gray-600 text-center">Create and edit your resume on any device, anywhere, anytime. Your progress is saved automatically.</p>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- Templates Preview -->
+<section id="templates" class="py-16 bg-gray-50">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-12">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">Professional Resume Templates</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Choose from our collection of ATS-friendly resume templates</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Template 1 -->
+            <div class="bg-white rounded-xl overflow-hidden shadow-md hover:shadow-xl transition duration-300">
+                <div class="h-48 bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center">
+                    <span class="text-white text-xl font-semibold">Modern</span>
+                </div>
+                <div class="p-6">
+                    <h3 class="text-xl font-semibold mb-2">Modern</h3>
+                    <p class="text-gray-600 mb-4">Clean, contemporary design that stands out</p>
+                    <a href="#" class="text-primary font-medium hover:underline">Preview Template</a>
+                </div>
+            </div>
+            
+        </div>
+        
+        <div class="text-center mt-12">
+            <a href="{% url 'resumes:resume_create' %}" class="bg-primary text-white font-semibold px-8 py-4 rounded-lg hover:bg-secondary transition duration-300 inline-block">
+                Start Building Your Resume <i class="fas fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </div>
+</section>
+
+<!-- How It Works -->
+<section id="how-it-works" class="py-16 bg-white">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="text-center mb-16">
+            <h2 class="text-3xl font-bold text-gray-900 mb-4">How It Works</h2>
+            <p class="text-xl text-gray-600 max-w-3xl mx-auto">Create your perfect resume in just a few simple steps</p>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <!-- Step 1 -->
+            <div class="relative">
+                <div class="absolute -left-4 md:left-1/2 md:-translate-x-1/2 top-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl z-10">1</div>
+                <div class="pt-12 px-6 pb-8 bg-gray-50 rounded-lg h-full">
+                    <h3 class="text-xl font-semibold mb-3">Choose a Template</h3>
+                    <p class="text-gray-600">Select from our collection of professional resume templates designed to impress recruiters.</p>
+                </div>
+            </div>
+            
+            <!-- Step 2 -->
+            <div class="relative">
+                <div class="absolute -left-4 md:left-1/2 md:-translate-x-1/2 top-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl z-10">2</div>
+                <div class="pt-12 px-6 pb-8 bg-gray-50 rounded-lg h-full">
+                    <h3 class="text-xl font-semibold mb-3">Fill in Your Details</h3>
+                    <p class="text-gray-600">Enter your work experience, education, skills, and other relevant information.</p>
+                </div>
+            </div>
+            
+            <!-- Step 3 -->
+            <div class="relative">
+                <div class="absolute -left-4 md:left-1/2 md:-translate-x-1/2 top-0 w-10 h-10 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl z-10">3</div>
+                <div class="pt-12 px-6 pb-8 bg-gray-50 rounded-lg h-full">
+                    <h3 class="text-xl font-semibold mb-3">Download & Apply</h3>
+                    <p class="text-gray-600">Download your resume as a PDF or print it directly from your browser.</p>
+                </div>
+            </div>
+        </div>
+    </div>
+</section>
+
+<!-- CTA Section -->
+<section class="py-16 bg-gradient-to-r from-primary to-secondary text-white">
+    <div class="max-w-4xl mx-auto text-center px-4">
+        <h2 class="text-3xl md:text-4xl font-bold mb-6">Ready to Create Your Professional Resume?</h2>
+        <p class="text-xl text-blue-100 mb-8">Join thousands of professionals who got hired with our resume builder.</p>
+        <a href="{% url 'resumes:resume_create' %}" class="bg-white text-primary font-semibold px-8 py-4 rounded-lg hover:bg-gray-100 transition duration-300 inline-block">
+            Get Started for Free <i class="fas fa-arrow-right ml-2"></i>
+        </a>
+    </div>
+</section>
+{% endblock %}

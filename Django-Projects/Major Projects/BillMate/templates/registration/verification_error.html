@@ -1,0 +1,105 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Verification Error - BillMate{% endblock %}
+
+{% block auth_content %}
+    <!-- Card Header -->
+    <div class="bg-gradient-to-r from-red-500 to-pink-500 p-8 text-center">
+        <h1 class="text-2xl font-bold text-white">Verification Error</h1>
+    </div>
+    
+    <!-- Card Content -->
+    <div class="p-8 text-center">
+        <div class="mx-auto flex items-center justify-center h-16 w-16 rounded-full bg-red-100 mb-4">
+            <svg class="h-8 w-8 text-red-600" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+            </svg>
+        </div>
+        
+        <h2 class="text-xl font-semibold text-gray-800 mb-4">Email Verification Failed</h2>
+        
+        <div class="space-y-4 mb-6">
+            {% if error == 'invalid' %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700">
+                                The verification link is invalid or has expired.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+                <p class="text-gray-600">
+                    Please request a new verification email from your account settings.
+                </p>
+            {% elif error == 'already_verified' %}
+                <div class="bg-yellow-50 border-l-4 border-yellow-500 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-yellow-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-yellow-700">
+                                This email address has already been verified.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% else %}
+                <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-4">
+                    <div class="flex">
+                        <div class="flex-shrink-0">
+                            <svg class="h-5 w-5 text-red-500" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd" />
+                            </svg>
+                        </div>
+                        <div class="ml-3">
+                            <p class="text-sm text-red-700">
+                                An error occurred while verifying your email address.
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            {% endif %}
+        </div>
+        
+        <div class="space-y-3">
+            {% if request.user.is_authenticated %}
+                <a href="{% url 'invoice_app:dashboard' %}" 
+                   class="btn btn-primary w-full">
+                    Go to Dashboard
+                </a>
+                {% if error == 'invalid' %}
+                    <a href="{% url 'invoice_app:resend_verification' %}" 
+                       class="btn btn-secondary w-full">
+                        Resend Verification Email
+                    </a>
+                {% endif %}
+            {% else %}
+                <a href="{% url 'login' %}" 
+                   class="btn btn-primary w-full">
+                    Return to Login
+                </a>
+                {% if error == 'invalid' %}
+                    <a href="{% url 'password_reset' %}" 
+                       class="text-sm text-blue-600 hover:text-blue-800">
+                        Forgot your password?
+                    </a>
+                {% endif %}
+            {% endif %}
+        </div>
+        
+        <div class="mt-8 pt-6 border-t border-gray-100 text-center">
+            <p class="text-sm text-gray-500">
+                Need help? <a href="mailto:support@billmate.com" class="text-blue-600 hover:text-blue-800">Contact support</a>
+            </p>
+        </div>
+    </div>
+{% endblock %}

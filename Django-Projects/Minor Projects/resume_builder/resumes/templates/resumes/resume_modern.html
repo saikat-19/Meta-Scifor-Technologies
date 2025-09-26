@@ -1,0 +1,390 @@
+{% load static %}
+<div class="resume-modern">
+<!-- Header -->
+<header class="mb-6 pt-2">
+    <!-- Profile Picture -->
+    <div class="flex justify-center mb-3">
+        <div class="text-center">
+            <img src="{% if resume.profile_picture %}{{ resume.profile_picture.url }}{% else %}{% static 'img/default-avatar.png' %}{% endif %}" 
+                 alt="Profile" 
+                 class="w-32 h-32 rounded-full object-cover border-4 border-white shadow-lg mx-auto">
+            
+            <h1 class="text-3xl font-bold text-gray-800 mt-4">{{ resume.full_name }}</h1>
+            {% if resume.title %}
+            <h2 class="text-xl text-gray-600 mb-6">{{ resume.title }}</h2>
+            {% endif %}
+        </div>
+    </div>
+    
+    <!-- Contact Info -->
+    <div class="contact-info max-w-2xl mx-auto">
+        <div class="contact-row">
+            {% if resume.email %}
+            <div class="contact-item email">
+                <i class="fas fa-envelope"></i>
+                <span>{{ resume.email }}</span>
+            </div>
+            {% endif %}
+            
+            {% if resume.phone %}
+            <div class="contact-item phone">
+                <i class="fas fa-phone-alt"></i>
+                <span>{{ resume.phone }}</span>
+            </div>
+            {% endif %}
+        </div>
+        
+        {% if resume.address %}
+        <div class="contact-item address">
+            <i class="fas fa-map-marker-alt"></i>
+            <span>{{ resume.address|linebreaksbr }}</span>
+        </div>
+        {% endif %}
+    </div>
+    
+    <div class="border-t border-gray-300 mt-4 mb-2"></div>
+</header>
+
+<!-- Main Content -->
+<div class="resume-content">
+    <!-- About -->
+    {% if resume.about %}
+    <section class="resume-section">
+        <h2 class="section-title">About Me</h2>
+        <div class="section-content">
+            <p>{{ resume.about|linebreaksbr }}</p>
+        </div>
+    </section>
+    {% endif %}
+
+        <!-- Experience -->
+        {% if resume.experiences.all %}
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-primary border-b-2 border-primary inline-block pb-1 mb-4">
+                Work Experience
+            </h2>
+            {% for exp in resume.experiences.all %}
+            <div class="mb-6">
+                <div class="flex justify-between items-start">
+                    <h3 class="text-lg font-semibold">{{ exp.job_title }}</h3>
+                    <div class="text-sm text-gray-600 whitespace-nowrap ml-4">
+                        {{ exp.start_date|date:"M Y" }} - 
+                        {% if exp.currently_working %}
+                        Present
+                        {% else %}
+                        {{ exp.end_date|date:"M Y" }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="text-gray-600 mb-2">{{ exp.company }}{% if exp.location %} - {{ exp.location }}{% endif %}</div>
+                {% if exp.description %}
+                <div class="text-gray-700">
+                    {{ exp.description|linebreaksbr }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+
+        <!-- Education -->
+        {% if resume.educations.all %}
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-primary border-b-2 border-primary inline-block pb-1 mb-4">
+                Education
+            </h2>
+            {% for edu in resume.educations.all %}
+            <div class="mb-4">
+                <div class="flex justify-between items-start">
+                    <h3 class="font-semibold">{{ edu.degree }}</h3>
+                    <div class="text-sm text-gray-600 whitespace-nowrap ml-4">
+                        {{ edu.start_date|date:"Y" }} - 
+                        {% if edu.currently_studying %}
+                        Present
+                        {% else %}
+                        {{ edu.end_date|date:"Y" }}
+                        {% endif %}
+                    </div>
+                </div>
+                <div class="flex justify-between items-start">
+                    <div class="text-gray-600">
+                        {{ edu.school }}{% if edu.field_of_study %}, {{ edu.field_of_study }}{% endif %}
+                    </div>
+                    {% if edu.grade %}
+                    <div class="bg-blue-50 text-blue-700 text-xs font-medium px-3 py-1 rounded-full whitespace-nowrap border border-blue-100">
+                        {% if edu.grade_type %}
+                            {% if edu.grade_type == 'percentage' %}
+                                {{ edu.grade }}%
+                            {% elif edu.grade_type == 'gpa' or edu.grade_type == 'cgpa' %}
+                                {{ edu.grade }} {{ edu.grade_type|upper }}
+                            {% else %}
+                                {{ edu.get_grade_type_display|upper }}: {{ edu.grade }}
+                            {% endif %}
+                        {% else %}
+                            {{ edu.grade }}
+                        {% endif %}
+                    </div>
+                    {% endif %}
+                </div>
+                {% if edu.description %}
+                <div class="text-gray-700 mt-1">
+                    {{ edu.description|linebreaksbr }}
+                </div>
+                {% endif %}
+            </div>
+            {% endfor %}
+        </section>
+        {% endif %}
+    </div>
+
+    <!-- Right Column -->
+    <div class="resume-sidebar">
+        <!-- Skills -->
+        {% if resume.skills.all %}
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-primary border-b-2 border-primary inline-block pb-1 mb-4">
+                Skills
+            </h2>
+            <div class="flex flex-wrap gap-2">
+                {% for skill in resume.skills.all %}
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-sm font-medium bg-gray-100 text-gray-800 border border-gray-200">
+                    {{ skill.name }}
+                </span>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <!-- Certifications -->
+        {% if resume.certifications.all %}
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-primary border-b-2 border-primary inline-block pb-1 mb-4">
+                Certifications
+            </h2>
+            <ul class="space-y-3">
+                {% for cert in resume.certifications.all %}
+                <li>
+                    <div class="font-medium">{{ cert.name }}</div>
+                    <div class="text-sm text-gray-600">{{ cert.issuer }} - {{ cert.date|date:"M Y" }}</div>
+                    {% if cert.credential_id %}
+                    <div class="text-xs text-gray-500">Credential ID: {{ cert.credential_id }}</div>
+                    {% endif %}
+                </li>
+                {% endfor %}
+            </ul>
+        </section>
+        {% endif %}
+
+        <!-- Languages -->
+        {% if resume.languages.all %}
+        <section class="mb-8">
+            <h2 class="text-xl font-bold text-primary border-b-2 border-primary inline-block pb-1 mb-4">
+                Languages
+            </h2>
+            <div class="space-y-3">
+                {% for lang in resume.languages.all %}
+                <div>
+                    <div class="flex justify-between">
+                        <span class="font-medium">{{ lang.name }}</span>
+                        <span class="text-sm text-gray-600">{{ lang.get_proficiency_display }}</span>
+                    </div>
+                    <div class="w-full bg-gray-200 rounded-full h-2 mt-1">
+                        <div class="bg-primary h-2 rounded-full lang-level-{{ lang.proficiency }}">
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+    </div>
+</div>
+
+<!-- Resume ID -->
+<div class="resume-id mt-12 pt-4 border-t border-gray-200 text-sm text-gray-500 text-center">
+    Resume ID: {{ resume.resume_id }} 
+    <span class="resume-created">| Created: {{ resume.created_at|date:"M d, Y" }}</span>
+</div>
+</div>
+
+<style>
+.resume-modern {
+    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+    max-width: 8.5in;
+    margin: 0 auto;
+    padding: 2rem;
+    line-height: 1.5;
+    color: #333;
+    color: #1f2937;
+}
+
+/* Skill levels removed */
+
+.resume-modern .lang-level-1 { width: 20%; }
+.resume-modern .lang-level-2 { width: 40%; }
+.resume-modern .lang-level-3 { width: 60%; }
+.resume-modern .lang-level-4 { width: 80%; }
+.resume-modern .lang-level-5 { width: 100%; }
+
+.resume-modern .text-primary { color: #3b82f6; }
+.resume-modern .border-primary { border-color: #3b82f6; }
+.resume-modern .bg-primary { background-color: #3b82f6; }
+
+/* List-based layout */
+.resume-content {
+    display: block;
+}
+
+.resume-section {
+    margin-bottom: 1.5rem;
+    break-inside: avoid;
+}
+
+.section-title {
+    font-size: 1.2rem;
+    font-weight: 600;
+    color: #1a365d;
+    border-bottom: 2px solid #4299e1;
+    padding-bottom: 0.25rem;
+    margin-bottom: 0.75rem;
+    display: inline-block;
+}
+
+.section-content {
+    margin-left: 1rem;
+}
+
+/* Experience and Education */
+.experience-item, .education-item {
+    margin-bottom: 1.25rem;
+}
+
+.item-header {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.25rem;
+}
+
+.item-title {
+    font-weight: 600;
+    color: #2d3748;
+}
+
+.item-date {
+    color: #718096;
+    font-size: 0.9em;
+}
+
+.item-subtitle {
+    font-style: italic;
+    color: #4a5568;
+    margin-bottom: 0.5rem;
+}
+
+/* Skills */
+.skill-category {
+    margin-bottom: 1rem;
+}
+
+.skill-category h4 {
+    font-weight: 600;
+    margin-bottom: 0.25rem;
+    color: #2d3748;
+}
+
+.skill-items {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+}
+
+.skill-tag {
+    background: #ebf8ff;
+    color: #2b6cb0;
+    padding: 0.25rem 0.75rem;
+    border-radius: 9999px;
+    font-size: 0.85em;
+}
+
+/* Contact Info */
+.contact-info {
+    width: 100%;
+    max-width: 500px;
+    margin: 1rem auto;
+}
+
+.contact-row {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 0.5rem;
+}
+
+.contact-item {
+    display: flex;
+    align-items: center;
+    font-size: 0.95em;
+    color: #4b5563;
+    padding: 0.25rem 0;
+}
+
+.contact-item i {
+    width: 1.75rem;
+    color: #3b82f6;
+    font-size: 1.1em;
+    flex-shrink: 0;
+}
+
+.contact-item.email {
+    margin-right: 1rem;
+}
+
+.contact-item.phone {
+    margin-left: auto;
+}
+
+.contact-item.address {
+    justify-content: center;
+    margin-top: 0.5rem;
+}
+
+/* Print styles */
+@media print {
+    .resume-modern {
+        padding: 0.15in 0.5in 0.25in;
+        font-size: 11pt;
+    }
+    
+    /* Ensure grade and grade type are visible in print */
+    .education-item .font-medium {
+        color: #1f2937 !important;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
+    
+    .no-print {
+        display: none !important;
+    }
+    
+    .resume-section {
+        margin-bottom: 1rem;
+    }
+    
+    /* Hide resume ID and creation date in print */
+    .resume-id,
+    .resume-created {
+        display: none !important;
+    }
+    
+    .section-title {
+        font-size: 1.1rem;
+    }
+    
+    .item-title {
+        font-size: 1em;
+    }
+    
+    .item-date {
+        font-size: 0.85em;
+    }
+}
+</style>

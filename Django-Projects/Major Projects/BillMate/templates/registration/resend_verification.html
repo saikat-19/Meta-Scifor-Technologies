@@ -1,0 +1,86 @@
+{% extends "base_auth.html" %}
+
+{% block title %}Resend Verification Email - BillMate{% endblock %}
+
+{% block auth_content %}
+<div class="min-h-screen flex items-center justify-center bg-gradient-to-br from-blue-50 to-indigo-50 p-4">
+    <div class="w-full max-w-md">
+        <!-- Card -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Card Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-6 text-center">
+                <div class="mx-auto flex h-16 w-16 items-center justify-center rounded-full bg-white bg-opacity-10">
+                    <svg class="h-8 w-8 text-white" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                    </svg>
+                </div>
+                <h2 class="mt-4 text-2xl font-bold text-white">Verify Your Email</h2>
+                <p class="mt-2 text-blue-100">
+                    We'll send you a new verification link
+                </p>
+            </div>
+            
+            <!-- Card Content -->
+            <div class="p-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="mb-6 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-800{% else %}bg-blue-50 text-blue-800{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form method="post" class="space-y-6">
+                    {% csrf_token %}
+                    
+                    {% if form.non_field_errors %}
+                        <div class="p-4 mb-4 text-sm text-red-700 bg-red-100 rounded-lg">
+                            {% for error in form.non_field_errors %}
+                                <p>{{ error }}</p>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                    
+                    <div class="space-y-2">
+                        {{ form.email.label_tag }}
+                        <div class="mt-1 relative rounded-md shadow-sm">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                            
+                            </div>
+                            {{ form.email }}
+                        </div>
+                        {% if form.email.errors %}
+                            <p class="mt-2 text-sm text-red-600">
+                                {% for error in form.email.errors %}
+                                    {{ error }}
+                                {% endfor %}
+                            </p>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="mt-6">
+                        <button type="submit" class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition duration-150 ease-in-out">
+                            Send Verification Email
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Remembered your password?
+                        <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500 transition duration-150 ease-in-out">
+                            Sign in
+                        </a>
+                    </p>
+                </div>
+                
+                <div class="mt-8 border-t border-gray-200 pt-6 text-center">
+                    <p class="text-xs text-gray-500">
+                        Need help? <a href="mailto:libmgmt89@gmail.com" class="font-medium text-gray-700 hover:text-gray-900">Mail</a>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

@@ -1,0 +1,66 @@
+/* Custom styles for Resume Builder */
+
+/* Smooth scrolling */
+html {
+    scroll-behavior: smooth;
+}
+
+/* Custom button styles */
+.btn-primary {
+    @apply bg-primary hover:bg-blue-700 text-white font-bold py-2 px-4 rounded transition duration-300;
+}
+
+.btn-outline {
+    @apply border-2 border-white hover:bg-white hover:bg-opacity-10 text-white font-semibold py-2 px-6 rounded transition duration-300;
+}
+
+/* Card hover effect */
+.card-hover {
+    @apply transition duration-300 transform hover:-translate-y-1 hover:shadow-lg;
+}
+
+/* Custom section padding */
+.section-padding {
+    @apply py-16 md:py-24;
+}
+
+/* Custom form styles */
+.form-input {
+    @apply w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-primary focus:border-transparent;
+}
+
+/* Responsive typography */
+@media (min-width: 768px) {
+    .text-hero {
+        font-size: 3.5rem;
+        line-height: 1.1;
+    }
+}
+
+/* Animation for template previews */
+@keyframes float {
+    0% { transform: translateY(0px); }
+    50% { transform: translateY(-10px); }
+    100% { transform: translateY(0px); }
+}
+
+.template-float {
+    animation: float 6s ease-in-out infinite;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    @apply bg-gray-100;
+}
+
+::-webkit-scrollbar-thumb {
+    @apply bg-primary rounded-full;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    @apply bg-blue-600;
+}

@@ -1,0 +1,33 @@
+{% extends "emails/base.html" %}
+
+{% block content %}
+<p>Dear {{ invoice.client_name }},</p>
+
+<p>Please find attached your invoice #{{ invoice.invoice_number }} for {{ invoice.total|floatformat:2 }} {{ invoice.currency|default:"USD" }}.</p>
+
+<p><strong>Invoice Details:</strong></p>
+<ul>
+    <li><strong>Invoice #:</strong> {{ invoice.invoice_number }}</li>
+    <li><strong>Date:</strong> {{ invoice.issue_date|date:"F d, Y" }}</li>
+    <li><strong>Due Date:</strong> {{ invoice.due_date|date:"F d, Y" }}</li>
+    <li><strong>Amount Due:</strong> {{ invoice.currency|default:"$" }}{{ invoice.total|floatformat:2 }}</li>
+</ul>
+
+{% if invoice.notes %}
+<p><strong>Notes:</strong><br>
+{{ invoice.notes|linebreaksbr }}</p>
+{% endif %}
+
+<p>You can view and download the invoice by clicking the button below:</p>
+
+<div style="margin: 30px 0; text-align: center;">
+    <a href="{{ invoice_url }}" style="background-color: #4F46E5; color: white; padding: 12px 24px; text-decoration: none; border-radius: 4px; font-weight: 500;">
+        View Invoice
+    </a>
+</div>
+
+<p>Thank you for your business!</p>
+
+<p>Best regards,<br>
+{{ company_name }}</p>
+{% endblock %}

@@ -1,0 +1,8 @@
+Django==4.2.7
+Pillow==10.0.1
+django-crispy-forms==2.1
+python-dotenv==1.0.0
+crispy-bootstrap5==2023.10
+python-dateutil==2.8.2
+reportlab==4.0.7  # For future PDF export functionality
+xhtml2pdf==0.2.13  # For future PDF export functionality

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ title }}{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="text-center py-8 md:py-16 px-4 sm:px-6">
+    <h1 class="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4 md:mb-6">
+        {{ welcome_message }}
+    </h1>
+    <p class="text-lg sm:text-xl text-gray-600 max-w-3xl mx-auto mb-8 md:mb-12 px-2">
+        {{ description }}
+    </p>
+    
+    <div class="flex flex-col sm:flex-row justify-center gap-4 mt-8 md:mt-10">
+        <a href="{% url 'login' %}" class="inline-flex justify-center items-center px-6 py-3 border border-transparent text-base md:text-lg font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+            Create Your First Invoice
+        </a>
+        <a href="#features" class="inline-flex justify-center items-center px-6 py-3 border border-gray-300 text-base md:text-lg font-medium rounded-lg text-blue-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-colors duration-200">
+            Learn More
+        </a>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div id="features" class="mt-12 md:mt-20 px-4 sm:px-6">
+    <h2 class="text-2xl md:text-3xl font-bold text-center text-gray-900 mb-12">
+        Everything You Need to Manage Your Invoices
+    </h2>
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 max-w-7xl mx-auto">
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-blue-600 mb-4">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Easy Invoicing</h3>
+        <p class="text-gray-600 text-sm sm:text-base">Create professional invoices in minutes with our intuitive interface.</p>
+    </div>
+    
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-blue-600 mb-4">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Save Time</h3>
+        <p class="text-gray-600 text-sm sm:text-base">Automate your billing process and focus on what matters most.</p>
+    </div>
+    
+    <div class="bg-white p-6 rounded-xl shadow-sm hover:shadow-md transition-shadow duration-200 border border-gray-100">
+        <div class="inline-flex items-center justify-center w-12 h-12 rounded-full bg-blue-50 text-blue-600 mb-4">
+            <svg class="h-6 w-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z"></path>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900 mb-2">Secure & Reliable</h3>
+        <p class="text-gray-600 text-sm sm:text-base">Your data is safe with our secure cloud storage.</p>
+    </div>
+</div>
+{% endblock %}

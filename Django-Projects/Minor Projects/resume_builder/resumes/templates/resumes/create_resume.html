@@ -1,0 +1,950 @@
+{% extends 'resumes/base.html' %}
+{% load static %}
+
+{% block extra_head %}
+{{ block.super }}
+{{ form_media }}
+{% endblock %}
+
+{% block extra_css %}
+<style>
+    .form-section {
+        margin-bottom: 2.5rem;
+        padding: 1.5rem;
+        background: #fff;
+        border-radius: 0.5rem;
+        box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    }
+    .form-section-header {
+        margin-bottom: 1.5rem;
+        padding-bottom: 0.75rem;
+        border-bottom: 1px solid #dee2e6;
+    }
+    .form-actions {
+        margin-top: 2rem;
+        padding-top: 1.5rem;
+        border-top: 1px solid #dee2e6;
+    }
+    .profile-picture-preview {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 3px solid #e5e7eb;
+    }
+    .empty-avatar {
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background-color: #f3f4f6;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: #9ca3af;
+        font-size: 2.5rem;
+    }
+    .formset-item {
+        background-color: #f9fafb;
+        border: 1px solid #e5e7eb;
+        border-radius: 0.5rem;
+        padding: 1.5rem;
+        margin-bottom: 1.5rem;
+        position: relative;
+    }
+    .delete-formset {
+        position: absolute;
+        top: 0.5rem;
+        right: 0.5rem;
+        color: #ef4444;
+        background: none;
+        border: none;
+        cursor: pointer;
+        font-size: 1.25rem;
+    }
+    .add-formset {
+        margin-top: 1rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<div class="container py-5">
+    <div class="row justify-content-center">
+        <div class="col-lg-10">
+            <div class="text-center mb-5">
+                <h1 class="display-4 mb-3">
+                   Create Your Resume
+                </h1>
+            </div>
+            
+            <div class="card shadow">
+                <div class="card-body p-4">
+                    <form id="resume-form" method="post" enctype="multipart/form-data" class="needs-validation" novalidate>
+                        {% csrf_token %}
+                        
+                        <div class="card mb-4">
+                            <div class="card-header bg-light">
+                                <h3 class="h4 mb-0">
+                                    <i class="fas fa-user-circle mr-2"></i>Personal Information
+                                </h3>
+                            </div>
+                            <div class="card-body">
+                                {% if form.non_field_errors %}
+                                    <div class="alert alert-danger">
+                                        {% for error in form.non_field_errors %}
+                                            {{ error }}
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.title.id_for_label }}">{{ form.title.label }}</label>
+                                    {{ form.title }}
+                                    {% if form.title.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.title.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.first_name.id_for_label }}">{{ form.first_name.label }}</label>
+                                        {{ form.first_name }}
+                                        {% if form.first_name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.first_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.last_name.id_for_label }}">{{ form.last_name.label }}</label>
+                                        {{ form.last_name }}
+                                        {% if form.last_name.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.last_name.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="form-row">
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.email.id_for_label }}">{{ form.email.label }}</label>
+                                        {{ form.email }}
+                                        {% if form.email.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.email.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                    <div class="form-group col-md-6">
+                                        <label for="{{ form.phone.id_for_label }}">{{ form.phone.label }}</label>
+                                        {{ form.phone }}
+                                        {% if form.phone.errors %}
+                                            <div class="invalid-feedback d-block">
+                                                {{ form.phone.errors.0 }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.address.id_for_label }}">{{ form.address.label }}</label>
+                                    {{ form.address }}
+                                    {% if form.address.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.address.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.about.id_for_label }}">{{ form.about.label }}</label>
+                                    {{ form.about }}
+                                    {% if form.about.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.about.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.profile_picture.id_for_label }}">{{ form.profile_picture.label }}</label>
+                                    {{ form.profile_picture }}
+                                    {% if form.profile_picture.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.profile_picture.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                    <small class="form-text text-muted">JPG, PNG or GIF (Max 2MB)</small>
+                                </div>
+                                
+                                <div class="form-group">
+                                    <label for="{{ form.template.id_for_label }}">{{ form.template.label }}</label>
+                                    {{ form.template }}
+                                    {% if form.template.errors %}
+                                        <div class="invalid-feedback d-block">
+                                            {{ form.template.errors.0 }}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            
+                        </div>
+                    <!-- Education Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h3 class="h4 mb-0">
+                                <i class="fas fa-graduation-cap me-2"></i>Education
+                            </h3>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="add-education">
+                                <i class="fas fa-plus me-1"></i>Add Education
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="education-items">
+                                <!-- Education items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Work Experience Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h3 class="h4 mb-0">
+                                <i class="fas fa-briefcase me-2"></i>Work Experience
+                            </h3>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="add-experience">
+                                <i class="fas fa-plus me-1"></i>Add Experience
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="experience-items">
+                                <!-- Experience items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="card mb-4">
+                        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+                            <h3 class="h4 mb-0">
+                                <i class="fas fa-tools me-2"></i>Skills
+                            </h3>
+                            <button type="button" class="btn btn-sm btn-outline-primary" id="add-skill">
+                                <i class="fas fa-plus me-1"></i>Add Skill
+                            </button>
+                        </div>
+                        <div class="card-body">
+                            <div id="skills-container">
+                                <!-- Skill items will be added here -->
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Form Actions -->
+                    <div class="card-footer text-right">
+                        <a href="{% url 'resumes:resume_list' %}" class="btn btn-secondary">
+                            <i class="fas fa-arrow-left me-2"></i>Cancel
+                        </a>
+                        <button type="submit" id="save-resume" class="btn btn-primary">
+                            <i class="fas fa-save me-2"></i>Save Resume
+                        </button>
+                    </div>
+                </form>
+                
+                <!-- Hidden form for dynamic fields -->
+                <form id="dynamic-fields-form" method="post" enctype="multipart/form-data" style="display: none;">
+                    {% csrf_token %}
+                    <div id="education-formset"></div>
+                    <div id="experience-formset"></div>
+                    <div id="skills-formset"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Hidden templates for dynamic content -->
+<template id="education-template">
+    <div class="education-item bg-gray-50 p-4 rounded-lg border border-gray-200 mt-2">
+        <div class="flex justify-between items-start">
+            <h4 class="text-md font-medium text-gray-900">Education</h4>
+            <button type="button" class="remove-education text-red-600 hover:text-red-800 text-sm font-medium">
+                Remove
+            </button>
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-6">
+            <div class="sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">School/University</label>
+                <input type="text" name="education[][school]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Degree</label>
+                <input type="text" name="education[][degree]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Field of Study</label>
+                <input type="text" name="education[][field]"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="month" name="education[][start_date]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <div class="flex flex-col sm:flex-row sm:items-end gap-2">
+                    <div class="flex-1">
+                        <label class="block text-sm font-medium text-gray-700">End Date (or expected)</label>
+                        <input type="month" name="education[][end_date]"
+                            class="education-end-date mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                    </div>
+                    <div class="flex items-center sm:mb-1">
+                        <input type="checkbox" name="education[][currently_studying]" id="education_currently_studying"
+                            class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded currently-studying">
+                        <label for="education_currently_studying" class="ml-2 block text-sm text-gray-700">
+                            Currently studying
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Grade Type</label>
+                <select name="education[][grade_type]" class="grade-type mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+                    <option value="">Select Grade Type</option>
+                    <option value="gpa">GPA</option>
+                    <option value="cgpa">CGPA</option>
+                    <option value="percentage">PERCENTAGE</option>
+                </select>
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Grade/Score</label>
+                <input type="text" name="education[][grade]" placeholder="e.g., 3.8, 85%, A"
+                    class="grade-value mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea name="education[][description]" rows="2"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="experience-template">
+    <div class="experience-item bg-gray-50 p-4 rounded-lg border border-gray-200 mt-2">
+        <div class="flex justify-between items-start">
+            <h4 class="text-md font-medium text-gray-900">Work Experience</h4>
+            <button type="button" class="remove-experience text-red-600 hover:text-red-800 text-sm font-medium">
+                Remove
+            </button>
+        </div>
+        <div class="mt-4 grid grid-cols-1 gap-y-4 gap-x-6 sm:grid-cols-6">
+            <div class="sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">Job Title</label>
+                <input type="text" name="experience[][title]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">Company</label>
+                <input type="text" name="experience[][company]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">Start Date</label>
+                <input type="month" name="experience[][start_date]" required
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-3">
+                <label class="block text-sm font-medium text-gray-700">End Date</label>
+                <input type="month" name="experience[][end_date]"
+                    class="experience-end-date mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500">
+            </div>
+            <div class="sm:col-span-6">
+                <div class="flex items-center">
+                    <input type="checkbox" name="experience[][currently_working]" id="experience_currently_working"
+                        class="h-4 w-4 text-primary-600 focus:ring-primary-500 border-gray-300 rounded currently-working">
+                    <label for="experience_currently_working" class="ml-2 block text-sm text-gray-700">
+                        I currently work here
+                    </label>
+                </div>
+            </div>
+            <div class="sm:col-span-6">
+                <label class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea name="experience[][description]" rows="3"
+                    class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"></textarea>
+            </div>
+        </div>
+    </div>
+</template>
+
+<template id="skill-template">
+    <div class="skill-item flex items-center mt-2">
+        <input type="text" name="skills[]" required
+            class="block w-full border border-gray-300 rounded-l-md shadow-sm py-2 px-3 focus:outline-none focus:ring-primary-500 focus:border-primary-500"
+            placeholder="e.g., JavaScript, Project Management">
+        <button type="button"
+            class="remove-skill inline-flex items-center px-3 py-2 border border-l-0 border-gray-300 bg-gray-50 text-gray-700 hover:bg-gray-100 focus:outline-none focus:ring-1 focus:ring-primary-500 focus:border-primary-500 rounded-r-md">
+            <span class="sr-only">Remove</span>
+            <svg class="h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                <path fill-rule="evenodd" d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z" clip-rule="evenodd" />
+            </svg>
+        </button>
+    </div>
+</template>
+
+{% endblock %}
+
+{% block extra_js %}
+<script>
+$(document).ready(function() {
+    // Profile picture handling
+    const $profilePicInput = $('#id_profile_picture');
+    let $profilePreview = $('#profile-preview');
+    const $emptyAvatar = $('#empty-avatar');
+    
+    // Function to handle file selection
+    function handleFileSelect(e) {
+        const file = e.target.files[0];
+        if (!file) return;
+        
+        // Check file size (max 2MB)
+        if (file.size > 2 * 1024 * 1024) {
+            alert('File size should be less than 2MB');
+            this.value = ''; // Clear the input
+            return;
+        }
+        
+        // Check file type
+        const validTypes = ['image/jpeg', 'image/png', 'image/gif'];
+        if (!validTypes.includes(file.type)) {
+            alert('Please select a valid image file (JPG, PNG or GIF)');
+            this.value = ''; // Clear the input
+            return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+            // Create preview if it doesn't exist
+            if ($profilePreview.length === 0) {
+                $('.position-relative').html(`
+                    <img id="profile-preview" src="${e.target.result}" 
+                         alt="Profile Preview" class="profile-picture-preview">
+                    <button type="button" class="btn btn-sm btn-danger position-absolute top-0 end-0 m-1 remove-profile-pic" 
+                            title="Remove photo" style="z-index: 10;">
+                        <i class="fas fa-times"></i>
+                    </button>
+                `);
+                
+                // Update references after creating new elements
+                $profilePreview = $('#profile-preview');
+                
+                // Add click handler to the new remove button
+                $('.remove-profile-pic').on('click', removeProfilePicture);
+            } else {
+                // Update existing preview
+                $profilePreview.attr('src', e.target.result).show();
+            }
+            
+            // Hide empty avatar if it exists
+            $emptyAvatar.hide();
+        };
+        
+        reader.onerror = function() {
+            alert('Error reading the file. Please try again.');
+            $profilePicInput.val('');
+        };
+        
+        reader.readAsDataURL(file);
+    }
+    
+    // Function to remove profile picture
+    function removeProfilePicture(e) {
+        if (e) e.preventDefault();
+        
+        // Clear file input
+        $profilePicInput.val('');
+        
+        // Show empty avatar
+        $emptyAvatar.show();
+        
+        // Remove preview if it exists
+        $profilePreview.remove();
+    }
+    
+    // Handle file input change
+    $profilePicInput.on('change', handleFileSelect);
+    
+    // Handle remove profile picture button
+    $(document).on('click', '.remove-profile-pic', removeProfilePicture);
+    
+    // Initialize tooltips
+    $('[data-bs-toggle="tooltip"]').tooltip();
+    
+    // Initialize date pickers if using any
+    $('.datepicker').datepicker({
+        format: 'yyyy-mm-dd',
+        autoclose: true,
+        todayHighlight: true
+    });
+    
+    // Function to validate form
+    function validateForm() {
+        let isValid = true;
+        
+        // Reset error messages
+        $('.is-invalid').removeClass('is-invalid');
+        $('.invalid-feedback').remove();
+        
+        // Function to validate a date field
+        const validateDateField = ($field, fieldName) => {
+            const value = $field.val();
+            if (!value) {
+                $field.addClass('is-invalid');
+                $field.after(`<div class="invalid-feedback">${fieldName} is required</div>`);
+                return false;
+            }
+            // Basic date format validation (YYYY-MM)
+            if (!/^\d{4}-\d{2}$/.test(value)) {
+                $field.addClass('is-invalid');
+                $field.after(`<div class="invalid-feedback">Please enter a valid date in YYYY-MM format</div>`);
+                return false;
+            }
+            return true;
+        };
+        
+        // Validate main form
+        $('#resume-form [required]').each(function() {
+            if (!$(this).val()) {
+                const fieldName = $(this).attr('name') || 'This field';
+                $(this).addClass('is-invalid');
+                $(this).after(`<div class="invalid-feedback">${fieldName} is required</div>`);
+                isValid = false;
+            }
+        });
+        
+        // Validate education items
+        if ($('.education-item').length === 0) {
+            $('#education-section').append('<div class="invalid-feedback d-block">At least one education entry is required</div>');
+            isValid = false;
+        } else {
+            $('.education-item').each(function(index) {
+                const $item = $(this);
+                const $startDate = $item.find('input[name$="[start_date]"], input[name*="start_date"]');
+                const $endDate = $item.find('input[name$="[end_date]"], input[name*="end_date"]');
+                const $currentlyStudying = $item.find('input[name$="[currently_studying]"], input[name*="currently_studying"]');
+                
+                // Validate start date
+                if (!validateDateField($startDate, 'Start date')) {
+                    isValid = false;
+                }
+                
+                // Validate end date if not currently studying
+                if (!$currentlyStudying.is(':checked') && !validateDateField($endDate, 'End date')) {
+                    isValid = false;
+                }
+                
+                // Validate end date is after start date if both are present
+                if ($startDate.val() && $endDate.val() && !$currentlyStudying.is(':checked')) {
+                    const startDate = new Date($startDate.val());
+                    const endDate = new Date($endDate.val());
+                    if (endDate < startDate) {
+                        $endDate.addClass('is-invalid');
+                        $endDate.after('<div class="invalid-feedback">End date must be after start date</div>');
+                        isValid = false;
+                    }
+                }
+            });
+        }
+        
+        // Validate experience items
+        $('.experience-item').each(function(index) {
+            const $item = $(this);
+            const $startDate = $item.find('input[name$="[start_date]"], input[name*="start_date"]');
+            const $endDate = $item.find('input[name$="[end_date]"], input[name*="end_date"]');
+            const $currentlyWorking = $item.find('input[name$="[current]"], input[name*="current"]');
+            
+            // Validate start date
+            if (!validateDateField($startDate, 'Start date')) {
+                isValid = false;
+            }
+            
+            // Validate end date if not currently working
+            if (!$currentlyWorking.is(':checked') && !validateDateField($endDate, 'End date')) {
+                isValid = false;
+            }
+            
+            // Validate end date is after start date if both are present
+            if ($startDate.val() && $endDate.val() && !$currentlyWorking.is(':checked')) {
+                const startDate = new Date($startDate.val());
+                const endDate = new Date($endDate.val());
+                if (endDate < startDate) {
+                    $endDate.addClass('is-invalid');
+                    $endDate.after('<div class="invalid-feedback">End date must be after start date</div>');
+                    isValid = false;
+                }
+            }
+        });
+        
+        return isValid;
+    }
+    
+    // Handle form submission
+    $('#resume-form').on('submit', function(e) {
+        e.preventDefault();
+        
+        // Validate form
+        if (!validateForm()) {
+            return false;
+        }
+        
+        // Show loading state
+        const $submitBtn = $(this).find('button[type="submit"]');
+        const originalBtnText = $submitBtn.html();
+        $submitBtn.prop('disabled', true).html('<span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span> Saving...');
+        
+        // Create a FormData object to handle file uploads
+        const formData = new FormData();
+        
+        // Add all form fields
+        const $form = $(this);
+        $form.find('input, textarea, select').each(function() {
+            const $field = $(this);
+            const name = $field.attr('name');
+            const type = $field.attr('type');
+            
+            // Skip file inputs as they're handled by FormData automatically
+            if (type === 'file') return;
+            
+            // Handle checkboxes and radio buttons
+            if ((type === 'checkbox' || type === 'radio') && !$field.is(':checked')) {
+                return;
+            }
+            
+            if (name) {
+                formData.append(name, $field.val() || '');
+            }
+        });
+        
+        // Add file inputs
+        $form.find('input[type="file"]').each(function() {
+            const $fileInput = $(this);
+            const files = $fileInput[0].files;
+            if (files.length > 0) {
+                formData.append($fileInput.attr('name'), files[0]);
+            }
+        });
+        
+        // Add CSRF token
+        const csrftoken = $('input[name=csrfmiddlewaretoken]').val();
+        formData.append('csrfmiddlewaretoken', csrftoken);
+        
+        // Add education items with proper formset prefixes
+        $('.education-item').each(function(index) {
+            const $item = $(this);
+            const prefix = `education-${index}`;
+            const $startDate = $item.find('input[name$="[start_date]"], input[name*="start_date"]');
+            const $endDate = $item.find('input[name$="[end_date]"], input[name*="end_date"]');
+            const $currentlyStudying = $item.find('input[name$="[currently_studying]"], input[name*="currently_studying"]');
+            
+            // Format date as YYYY-MM-DD (required by Django)
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '';
+                // If it's already in YYYY-MM format, add -01 for day
+                if (/^\d{4}-\d{2}$/.test(dateStr)) {
+                    return `${dateStr}-01`;
+                }
+                return dateStr;
+            };
+
+            formData.append(`${prefix}-school`, $item.find('input[name$="[school]"], input[name*="school"]').val() || '');
+            formData.append(`${prefix}-degree`, $item.find('input[name$="[degree]"], input[name*="degree"]').val() || '');
+            formData.append(`${prefix}-field_of_study`, $item.find('input[name$="[field]"], input[name*="field"]').val() || '');
+            formData.append(`${prefix}-start_date`, formatDate($startDate.val()));
+            
+            // Only add end_date if not currently studying
+            if (!$currentlyStudying.is(':checked')) {
+                formData.append(`${prefix}-end_date`, formatDate($endDate.val()));
+            } else {
+                formData.append(`${prefix}-end_date`, '');
+            }
+            
+            formData.append(`${prefix}-currently_studying`, $currentlyStudying.is(':checked') ? 'on' : '');
+            formData.append(`${prefix}-grade`, $item.find('input[name$="[grade]"], input[name*="grade"]').val() || '');
+            formData.append(`${prefix}-grade_type`, $item.find('select[name$="[grade_type]"], select[name*="grade_type"]').val() || '');
+            formData.append(`${prefix}-description`, $item.find('textarea[name$="[description]"]').val() || '');
+            formData.append(`${prefix}-id`, '');
+            formData.append(`${prefix}-DELETE`, $item.find('input[name$="-DELETE"]').is('checked'));
+        });
+        
+        formData.append('education-TOTAL_FORMS', $('.education-item').length);
+        formData.append('education-INITIAL_FORMS', '0');
+        formData.append('education-MIN_NUM_FORMS', '0');
+        formData.append('education-MAX_NUM_FORMS', '1000');
+        
+        // Add experience items with proper formset prefixes
+        $('.experience-item').each(function(index) {
+            const $item = $(this);
+            const prefix = `experience-${index}`;
+            const $startDate = $item.find('input[name$="[start_date]"], input[name*="start_date"]');
+            const $endDate = $item.find('input[name$="[end_date]"], input[name*="end_date"]');
+            const $currentlyWorking = $item.find('input[name$="[current]"], input[name*="current"]');
+            
+            // Format date as YYYY-MM-DD (required by Django)
+            const formatDate = (dateStr) => {
+                if (!dateStr) return '';
+                // If it's already in YYYY-MM format, add -01 for day
+                if (/^\d{4}-\d{2}$/.test(dateStr)) {
+                    return `${dateStr}-01`;
+                }
+                return dateStr;
+            };
+
+            formData.append(`${prefix}-job_title`, $item.find('input[name$="[title]"], input[name*="title"]').val() || '');
+            formData.append(`${prefix}-company`, $item.find('input[name$="[company]"], input[name*="company"]').val() || '');
+            formData.append(`${prefix}-location`, $item.find('input[name$="[location]"], input[name*="location"]').val() || '');
+            formData.append(`${prefix}-start_date`, formatDate($startDate.val()));
+            
+            // Only add end_date if not currently working
+            if (!$currentlyWorking.is(':checked')) {
+                formData.append(`${prefix}-end_date`, formatDate($endDate.val()));
+            } else {
+                formData.append(`${prefix}-end_date`, '');
+            }
+            
+            formData.append(`${prefix}-currently_working`, $currentlyWorking.is(':checked') ? 'on' : '');
+            formData.append(`${prefix}-description`, $item.find('textarea[name$="[description]"]').val() || '');
+            formData.append(`${prefix}-id`, '');
+            formData.append(`${prefix}-DELETE`, $item.find('input[name$="-DELETE"]').is(':checked'));
+        });
+        formData.append('experience-TOTAL_FORMS', $('.experience-item').length);
+        formData.append('experience-INITIAL_FORMS', '0');
+        formData.append('experience-MIN_NUM_FORMS', '0');
+        formData.append('experience-MAX_NUM_FORMS', '1000');
+        
+        // Add skill items with proper formset prefixes
+        $('.skill-item').each(function(index) {
+            const $item = $(this);
+            const prefix = `skill-${index}`;
+            const skill = $item.find('input[type="text"], input[type="text"][name*="skill"]').val();
+            
+            if (skill) {
+                formData.append(`${prefix}-name`, skill);
+                formData.append(`${prefix}-level`, 'intermediate'); // Default level
+                formData.append(`${prefix}-id`, '');
+                formData.append(`${prefix}-DELETE`, $item.find('input[name$="-DELETE"]').is(':checked'));
+            }
+        });
+        formData.append('skill-TOTAL_FORMS', $('.skill-item').length);
+        formData.append('skill-INITIAL_FORMS', '0');
+        formData.append('skill-MIN_NUM_FORMS', '0');
+        formData.append('skill-MAX_NUM_FORMS', '1000');
+        
+        // Submit the form data using AJAX
+        $.ajax({
+            url: $(this).attr('action'),
+            type: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            headers: {
+                'X-Requested-With': 'XMLHttpRequest',
+                'X-CSRFToken': csrftoken
+            },
+            success: function(response) {
+                if (response.success && response.redirect) {
+                    window.location.href = response.redirect;
+                } else if (response.errors) {
+                    // Handle form errors
+                    let errorMessage = 'Please fix the following errors:\n\n';
+                    Object.entries(response.errors).forEach(([formset, errors]) => {
+                        if (errors && errors.length > 0) {
+                            errorMessage += `${formset.toUpperCase()}:\n`;
+                            errors.forEach(error => {
+                                errorMessage += `- ${error}\n`;
+                            });
+                            errorMessage += '\n';
+                        }
+                    });
+                    alert(errorMessage);
+                } else {
+                    // Fallback success handler
+                    window.location.reload();
+                }
+            },
+            error: function(xhr, status, error) {
+                // Handle error (e.g., show error message)
+                console.error('Error:', xhr.responseText);
+                let errorMessage = 'An error occurred while saving the resume.\n\n';
+                try {
+                    const response = JSON.parse(xhr.responseText);
+                    if (response.errors) {
+                        Object.entries(response.errors).forEach(([formset, errors]) => {
+                            if (errors && errors.length > 0) {
+                                errorMessage += `${formset.toUpperCase()}:\n`;
+                                errors.forEach(error => {
+                                    errorMessage += `- ${error}\n`;
+                                });
+                                errorMessage += '\n';
+                            }
+                        });
+                    }
+                } catch (e) {
+                    errorMessage += 'Please try again or contact support if the problem persists.';
+                }
+                alert(errorMessage);
+            },
+            complete: function() {
+                // Re-enable the submit button
+                $submitBtn.prop('disabled', false).html(originalBtnText);
+            }
+        });
+        
+        // Add education formset data
+        educationItems.forEach((item, index) => {
+            for (const [key, value] of Object.entries(item)) {
+                $hiddenForm.append($('<input>', {
+                    type: 'hidden',
+                    name: `education-${index}-${key}`,
+                    value: value === true ? 'on' : (value || '')
+                }));
+            }
+        });
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'education-TOTAL_FORMS',
+            value: educationItems.length
+        }));
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'education-INITIAL_FORMS',
+            value: '0'
+        }));
+        
+        // Add experience formset data
+        experienceItems.forEach((item, index) => {
+            for (const [key, value] of Object.entries(item)) {
+                $hiddenForm.append($('<input>', {
+                    type: 'hidden',
+                    name: `experience-${index}-${key}`,
+                    value: value === true ? 'on' : (value || '')
+                }));
+            }
+        });
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'experience-TOTAL_FORMS',
+            value: experienceItems.length
+        }));
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'experience-INITIAL_FORMS',
+            value: '0'
+        }));
+        
+        // Add skills formset data
+        skillItems.forEach((item, index) => {
+            $hiddenForm.append($('<input>', {
+                type: 'hidden',
+                name: `skill-${index}-name`,
+                value: item.name
+            }));
+        });
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'skill-TOTAL_FORMS',
+            value: skillItems.length
+        }));
+        $hiddenForm.append($('<input>', {
+            type: 'hidden',
+            name: 'skill-INITIAL_FORMS',
+            value: '0'
+        }));
+        
+        // Submit the form
+        $hiddenForm.submit();
+    });
+    
+    // Handle currently studying/working checkboxes
+    $(document).on('change', '.currently-studying', function() {
+        const $educationItem = $(this).closest('.education-item');
+        const $endDate = $educationItem.find('.education-end-date');
+        const $gradeType = $educationItem.find('.grade-type');
+        const $gradeValue = $educationItem.find('.grade-value');
+        
+        if ($(this).is(':checked')) {
+            $endDate.prop('disabled', true).val('');
+            $gradeType.prop('disabled', true).val('');
+            $gradeValue.prop('disabled', true).val('');
+        } else {
+            $endDate.prop('disabled', false);
+            $gradeType.prop('disabled', false);
+            $gradeValue.prop('disabled', false);
+        }
+    });
+
+    $(document).on('change', '.currently-working', function() {
+        const $endDate = $(this).closest('.experience-item').find('.experience-end-date');
+        if ($(this).is(':checked')) {
+            $endDate.prop('disabled', true).val('');
+        } else {
+            $endDate.prop('disabled', false);
+        }
+    });
+
+    // Initialize form functionality when document is ready
+    $(document).ready(function() {
+        // Add Skill
+        $(document).on('click', '#add-skill', function(e) {
+            e.preventDefault();
+            const template = document.getElementById('skill-template').innerHTML;
+            const container = document.getElementById('skills-container');
+            const newItem = document.createElement('div');
+            newItem.innerHTML = template;
+            container.appendChild(newItem);
+        });
+        
+        // Add Education
+        $(document).on('click', '#add-education', function(e) {
+            e.preventDefault();
+            const template = document.getElementById('education-template').innerHTML;
+            const container = document.getElementById('education-items');
+            const newItem = document.createElement('div');
+            newItem.innerHTML = template;
+            container.appendChild(newItem);
+        });
+        
+        // Add Experience
+        $(document).on('click', '#add-experience', function(e) {
+            e.preventDefault();
+            const template = document.getElementById('experience-template').innerHTML;
+            const container = document.getElementById('experience-items');
+            const newItem = document.createElement('div');
+            newItem.innerHTML = template;
+            container.appendChild(newItem);
+        });
+        
+        // Remove handlers - using event delegation on document
+        $(document).on('click', '.remove-skill', function(e) {
+            e.preventDefault();
+            $(this).closest('.skill-item').remove();
+        });
+        
+        $(document).on('click', '.remove-education', function(e) {
+            e.preventDefault();
+            $(this).closest('.education-item').remove();
+        });
+        
+        $(document).on('click', '.remove-experience', function(e) {
+            e.preventDefault();
+            $(this).closest('.experience-item').remove();
+        });
+    });
+});
+</script>
+{% endblock %}

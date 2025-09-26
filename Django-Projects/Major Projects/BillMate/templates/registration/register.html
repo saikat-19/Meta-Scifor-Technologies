@@ -1,0 +1,153 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - BillMate{% endblock %}
+
+{% block content %}
+<div class="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100 flex items-center justify-center p-4">
+    <div class="w-full max-w-md">
+        <!-- Card Container -->
+        <div class="bg-white rounded-2xl shadow-xl overflow-hidden">
+            <!-- Card Header -->
+            <div class="bg-gradient-to-r from-blue-600 to-indigo-600 p-8 text-center">
+                <h1 class="text-3xl font-bold text-white">Create Account</h1>
+                <p class="mt-2 text-blue-100">Join BillMate today</p>
+            </div>
+            
+            <!-- Card Content -->
+            <div class="p-8">
+                {% if messages %}
+                    {% for message in messages %}
+                        <div class="mb-6 p-4 rounded-lg {% if message.tags == 'error' %}bg-red-50 text-red-700 border border-red-200{% else %}bg-green-50 text-green-700 border border-green-200{% endif %}">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                
+                <form class="space-y-6" method="POST" action="{% url 'register' %}">
+                    {% csrf_token %}
+                    
+                    <!-- Name Fields -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div class="space-y-2">
+                            <label for="id_first_name" class="block text-sm font-medium text-gray-700">First Name</label>
+                            <input id="id_first_name" name="first_name" type="text" required 
+                                   class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="First name"
+                                   {% if form.first_name.value %}value="{{ form.first_name.value }}"{% endif %}>
+                            {% if form.first_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.first_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                        <div class="space-y-2">
+                            <label for="id_last_name" class="block text-sm font-medium text-gray-700">Last Name</label>
+                            <input id="id_last_name" name="last_name" type="text" required 
+                                   class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="Last name"
+                                   {% if form.last_name.value %}value="{{ form.last_name.value }}"{% endif %}>
+                            {% if form.last_name.errors %}
+                                <p class="mt-1 text-sm text-red-600">{{ form.last_name.errors.0 }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+
+                    <!-- Email Field -->
+                    <div class="space-y-2">
+                        <label for="id_email" class="block text-sm font-medium text-gray-700">Email Address</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
+                                </svg>
+                            </div>
+                            <input id="id_email" name="email" type="email" required 
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="your@email.com"
+                                   {% if form.email.value %}value="{{ form.email.value }}"{% endif %}>
+                        </div>
+                        {% if form.email.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.email.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+
+                    <!-- Username Field -->
+                    <div class="space-y-2">
+                        <label for="id_username" class="block text-sm font-medium text-gray-700">Username</label>
+                        <input id="id_username" name="username" type="text" required 
+                               class="block w-full px-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                               placeholder="Choose a username"
+                               {% if form.username.value %}value="{{ form.username.value }}"{% endif %}>
+                        {% if form.username.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.username.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Password1 Field -->
+                    <div class="space-y-2">
+                        <label for="id_password1" class="block text-sm font-medium text-gray-700">Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                                </svg>
+                            </div>
+                            <input id="id_password1" name="password1" type="password" required 
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="Create a password">
+                        </div>
+                        {% if form.password1.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.password1.errors.0 }}</p>
+                        {% endif %}
+                        <p class="mt-1 text-xs text-gray-500">
+                            Your password must be at least 8 characters long and not too common.
+                        </p>
+                    </div>
+                    
+                    <!-- Password2 Field -->
+                    <div class="space-y-2">
+                        <label for="id_password2" class="block text-sm font-medium text-gray-700">Confirm Password</label>
+                        <div class="relative">
+                            <div class="absolute inset-y-0 left-0 pl-3 flex items-center pointer-events-none">
+                                <svg class="h-5 w-5 text-gray-400" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5 13l4 4L19 7" />
+                                </svg>
+                            </div>
+                            <input id="id_password2" name="password2" type="password" required 
+                                   class="block w-full pl-10 pr-3 py-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-200"
+                                   placeholder="Confirm your password">
+                        </div>
+                        {% if form.password2.errors %}
+                            <p class="mt-1 text-sm text-red-600">{{ form.password2.errors.0 }}</p>
+                        {% endif %}
+                    </div>
+                    
+                    <!-- Submit Button -->
+                    <button type="submit" 
+                            class="w-full flex justify-center py-3 px-4 border border-transparent rounded-lg shadow-sm text-sm font-medium text-white bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500 transition-all duration-200 transform hover:-translate-y-0.5">
+                        Create Account
+                    </button>
+                </form>
+                
+                <!-- Login Link -->
+                <div class="mt-6 text-center">
+                    <p class="text-sm text-gray-600">
+                        Already have an account? 
+                        <a href="{% url 'login' %}" class="font-medium text-blue-600 hover:text-blue-500 transition-colors">
+                            Sign in
+                        </a>
+                    </p>
+                </div>
+            </div>
+            
+            <!-- Card Footer -->
+            <div class="bg-gray-50 px-8 py-4 border-t border-gray-200">
+                <p class="text-xs text-center text-gray-500">
+                    By registering, you agree to our 
+                    <a href="{% url 'invoice_app:terms' %}" class="text-blue-600 hover:underline">Terms of Service</a> 
+                    and 
+                    <a href="{% url 'invoice_app:privacy' %}" class="text-blue-600 hover:underline">Privacy Policy</a>.
+                </p>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

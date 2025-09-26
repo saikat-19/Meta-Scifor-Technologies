@@ -1,0 +1,202 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% if use_humanize %}
+{% load humanize %}
+{% endif %}
+
+{% block extra_head %}
+<style>
+    /* Custom styles for better mobile experience */
+    @media (max-width: 640px) {
+        .stat-card {
+            min-width: 100%;
+            margin-bottom: 1rem;
+        }
+        .table-container {
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+        .table {
+            min-width: 640px;
+        }
+    }
+    
+    .status-badge {
+        padding-left: 0.5rem;
+        padding-right: 0.5rem;
+        padding-top: 0.25rem;
+        padding-bottom: 0.25rem;
+        border-radius: 9999px;
+        font-size: 0.75rem;
+        font-weight: 500;
+    }
+    .status-draft { background-color: #f3f4f6; color: #1f2937; }
+    .status-sent { background-color: #dbeafe; color: #1e40af; }
+    .status-paid { background-color: #d1fae5; color: #065f46; }
+    .status-overdue { background-color: #fee2e2; color: #991b1b; }
+    .status-cancelled { background-color: #e5e7eb; color: #1f2937; }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="p-4 md:p-8">
+    <!-- Header -->
+    <div class="flex flex-col space-y-4 md:space-y-0 md:flex-row md:justify-between md:items-center mb-6 md:mb-8">
+        <h1 class="text-2xl font-bold text-gray-800">Dashboard</h1>
+        <div class="flex space-x-4">
+            <a href="{% url 'invoice_app:invoice_create' %}" class="px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition duration-200 flex items-center">
+                <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6"></path>
+                </svg>
+                New Invoice
+            </a>
+        </div>
+    </div>
+    
+    <!-- Stats Cards -->
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4 mb-6 md:gap-6 md:mb-8">
+        <!-- Total Invoices -->
+        <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Total Invoices</p>
+                    <p class="text-2xl font-bold text-gray-800">{{ stats.total_invoices|intcomma }}</p>
+                </div>
+                <div class="p-3 bg-blue-50 rounded-lg">
+                    <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+                    </svg>
+                </div>
+            </div>
+            <p class="mt-2 text-sm text-gray-500">All time</p>
+        </div>
+        
+        <!-- Paid Invoices -->
+        <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Paid Amount</p>
+                    <p class="text-2xl font-bold text-gray-800">₹{{ stats.total_paid|floatformat:2|intcomma }}</p>
+                </div>
+                <div class="p-3 bg-green-50 rounded-lg">
+                    <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+            <p class="mt-2 text-sm text-green-600 font-medium">Paid invoices</p>
+        </div>
+        
+        <!-- Pending Invoices -->
+        <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Pending Amount</p>
+                    <p class="text-2xl font-bold text-gray-800">₹{{ stats.total_pending|floatformat:2|intcomma }}</p>
+                </div>
+                <div class="p-3 bg-yellow-50 rounded-lg">
+                    <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                </div>
+            </div>
+            <p class="mt-2 text-sm text-yellow-600 font-medium">Awaiting payment</p>
+        </div>
+        
+        <!-- Overdue Invoices -->
+        <div class="bg-white p-4 md:p-6 rounded-xl shadow-sm border border-gray-100 stat-card">
+            <div class="flex items-center justify-between">
+                <div>
+                    <p class="text-sm font-medium text-gray-500">Overdue</p>
+                    <p class="text-2xl font-bold text-gray-800">₹{{ stats.total_overdue|floatformat:2|intcomma }}</p>
+                </div>
+                <div class="p-3 bg-red-50 rounded-lg">
+                    <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"></path>
+                    </svg>
+                </div>
+            </div>
+            <p class="mt-2 text-sm text-red-600 font-medium">Past due date</p>
+        </div>
+    </div>
+    
+    <!-- Recent Invoices -->
+    <div class="bg-white rounded-xl shadow-sm border border-gray-100 overflow-hidden">
+        <div class="px-6 py-4 border-b border-gray-200 flex justify-between items-center">
+            <h2 class="text-lg font-semibold text-gray-800">Recent Invoices</h2>
+            <a href="{% url 'invoice_app:invoice_list' %}" class="text-sm font-medium text-blue-600 hover:text-blue-800">View all →</a>
+        </div>
+        
+        {% if recent_invoices %}
+        <div class="overflow-x-auto">
+            <table class="min-w-full divide-y divide-gray-200">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Invoice #</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Client</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Date</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Due Date</th>
+                        <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                        <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                    </tr>
+                </thead>
+                <tbody class="bg-white divide-y divide-gray-200">
+                    {% for invoice in recent_invoices %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <a href="{% url 'invoice_app:invoice_detail' invoice.pk %}" class="text-sm font-medium text-blue-600 hover:text-blue-800">
+                                {{ invoice.invoice_number }}
+                            </a>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-900">
+                            {{ invoice.client_name|truncatechars:20 }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ invoice.issue_date|date:"M d, Y" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
+                            {{ invoice.due_date|date:"M d, Y" }}
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap">
+                            <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full 
+                                {% if invoice.status == 'draft' %}bg-gray-100 text-gray-800
+                                {% elif invoice.status == 'sent' %}bg-blue-100 text-blue-800
+                                {% elif invoice.status == 'paid' %}bg-green-100 text-green-800
+                                {% elif invoice.status == 'overdue' %}bg-red-100 text-red-800
+                                {% endif %}">
+                                {{ invoice.get_status_display }}
+                            </span>
+                        </td>
+                        <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium text-gray-900">
+                            ₹{{ invoice.total|floatformat:2|intcomma }}
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+        {% else %}
+        <div class="px-6 py-12 text-center">
+            <svg class="mx-auto h-12 w-12 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+            </svg>
+            <h3 class="mt-2 text-sm font-medium text-gray-900">No invoices</h3>
+            <p class="mt-1 text-sm text-gray-500">Get started by creating a new invoice.</p>
+            <div class="mt-6">
+                <a href="{% url 'invoice_app:invoice_create' %}" class="inline-flex items-center px-4 py-2 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <svg class="-ml-1 mr-2 h-5 w-5" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" fill="currentColor" aria-hidden="true">
+                        <path fill-rule="evenodd" d="M10 5a1 1 0 011 1v3h3a1 1 0 110 2h-3v3a1 1 0 11-2 0v-3H6a1 1 0 110-2h3V6a1 1 0 011-1z" clip-rule="evenodd" />
+                    </svg>
+                    New Invoice
+                </a>
+            </div>
+        </div>
+        {% endif %}
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    // Add any custom JavaScript here if needed
+</script>
+{% endblock %}

@@ -1,0 +1,310 @@
+{% extends 'dashboard/base_dashboard.html' %}
+{% load static %}
+{% load humanize %}
+
+{% block extra_head %}
+<!-- Font Awesome Icons -->
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
+<style>
+    .client-avatar {
+        width: 80px;
+        height: 80px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-weight: 600;
+        font-size: 32px;
+    }
+    
+    .info-card {
+        background: white;
+        border-radius: 8px;
+        border: 1px solid #e5e7eb;
+        box-shadow: 0 1px 3px 0 rgba(0, 0, 0, 0.1);
+    }
+    
+    .info-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 12px 0;
+        border-bottom: 1px solid #f3f4f6;
+    }
+    
+    .info-row:last-child {
+        border-bottom: none;
+    }
+    
+    .info-label {
+        font-weight: 500;
+        color: #6b7280;
+        display: flex;
+        align-items: center;
+    }
+    
+    .info-value {
+        color: #111827;
+        font-weight: 500;
+    }
+</style>
+{% endblock %}
+
+{% block dashboard_content %}
+<div class="p-4 md:p-8">
+    <!-- Page Header -->
+    <div class="bg-white rounded-lg shadow-sm border border-gray-200 mb-6">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <div class="flex items-center justify-between">
+                <div class="flex items-center space-x-4">
+                    <div class="client-avatar">
+                        {{ client.name|first|upper }}
+                    </div>
+                    <div>
+                        <h1 class="text-2xl font-bold text-gray-900">{{ client.name }}</h1>
+                        <p class="text-sm text-gray-500">Client since {{ client.created_at|date:"M d, Y" }}</p>
+                    </div>
+                </div>
+                <div class="flex space-x-3">
+                    <a href="{% url 'invoice_app:client_update' client.pk %}" class="inline-flex items-center px-4 py-2 border border-blue-300 rounded-md text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-edit mr-2"></i>
+                        Edit Client
+                    </a>
+                    <a href="{% url 'invoice_app:client_list' %}" class="inline-flex items-center px-4 py-2 border border-gray-300 rounded-md text-sm font-medium text-gray-700 bg-white hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-arrow-left mr-2"></i>
+                        Back to Clients
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <!-- Client Information -->
+        <div class="info-card">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-user text-gray-500 mr-2"></i>
+                    Client Information
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-user text-gray-400 mr-2"></i>
+                        Name
+                    </span>
+                    <span class="info-value">{{ client.name }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-envelope text-gray-400 mr-2"></i>
+                        Email
+                    </span>
+                    <span class="info-value">
+                        <a href="mailto:{{ client.email }}" class="text-blue-600 hover:text-blue-800">
+                            {{ client.email }}
+                        </a>
+                    </span>
+                </div>
+                
+                {% if client.phone %}
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-phone text-gray-400 mr-2"></i>
+                        Phone
+                    </span>
+                    <span class="info-value">
+                        <a href="tel:{{ client.phone }}" class="text-blue-600 hover:text-blue-800">
+                            {{ client.phone }}
+                        </a>
+                    </span>
+                </div>
+                {% endif %}
+                
+                {% if client.website %}
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-globe text-gray-400 mr-2"></i>
+                        Website
+                    </span>
+                    <span class="info-value">
+                        <a href="{{ client.website }}" target="_blank" class="text-blue-600 hover:text-blue-800">
+                            {{ client.website }}
+                        </a>
+                    </span>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Address Information -->
+        <div class="info-card">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                    <i class="fas fa-map-marker-alt text-gray-500 mr-2"></i>
+                    Address Information
+                </h2>
+            </div>
+            <div class="p-6">
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-road text-gray-400 mr-2"></i>
+                        Street Address
+                    </span>
+                    <span class="info-value">{{ client.address }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-city text-gray-400 mr-2"></i>
+                        City
+                    </span>
+                    <span class="info-value">{{ client.city }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-map text-gray-400 mr-2"></i>
+                        State
+                    </span>
+                    <span class="info-value">{{ client.state }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-mail-bulk text-gray-400 mr-2"></i>
+                        Postal Code
+                    </span>
+                    <span class="info-value">{{ client.postal_code }}</span>
+                </div>
+                
+                <div class="info-row">
+                    <span class="info-label">
+                        <i class="fas fa-globe text-gray-400 mr-2"></i>
+                        Country
+                    </span>
+                    <span class="info-value">{{ client.country }}</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Recent Invoices -->
+    <div class="mt-6">
+        <div class="bg-white rounded-lg shadow-sm border border-gray-200">
+            <div class="px-6 py-4 border-b border-gray-200">
+                <div class="flex items-center justify-between">
+                    <h2 class="text-lg font-semibold text-gray-900 flex items-center">
+                        <i class="fas fa-file-invoice text-gray-500 mr-2"></i>
+                        Recent Invoices
+                    </h2>
+                    <a href="{% url 'invoice_app:invoice_create' %}?client={{ client.pk }}" class="inline-flex items-center px-3 py-2 border border-blue-300 rounded-md text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                        <i class="fas fa-plus mr-2"></i>
+                        Create Invoice
+                    </a>
+                </div>
+            </div>
+            
+            {% if recent_invoices %}
+            <div class="overflow-x-auto">
+                <table class="min-w-full divide-y divide-gray-200">
+                    <thead class="bg-gray-50">
+                        <tr>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Invoice #
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Issue Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Due Date
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Status
+                            </th>
+                            <th scope="col" class="px-6 py-3 text-right text-xs font-medium text-gray-500 uppercase tracking-wider">
+                                Total
+                            </th>
+                            <th scope="col" class="relative px-6 py-3">
+                                <span class="sr-only">Actions</span>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody class="bg-white divide-y divide-gray-200">
+                        {% for invoice in recent_invoices %}
+                        <tr class="hover:bg-gray-50">
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm font-medium text-gray-900">{{ invoice.invoice_number }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ invoice.issue_date|date:"M d, Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <div class="text-sm text-gray-900">{{ invoice.due_date|date:"M d, Y" }}</div>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap">
+                                <span class="inline-flex px-2 py-1 text-xs font-semibold rounded-full bg-{{ invoice.status }}-100 text-{{ invoice.status }}-800">
+                                    {{ invoice.get_status_display }}
+                                </span>
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                ₹{{ invoice.total|floatformat:2|intcomma }}
+                            </td>
+                            <td class="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
+                                <a href="{% url 'invoice_app:invoice_detail' invoice.pk %}" class="text-blue-600 hover:text-blue-900">
+                                    View
+                                </a>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+            {% else %}
+            <div class="p-6 text-center">
+                <i class="fas fa-file-invoice text-gray-300 text-4xl mb-4"></i>
+                <p class="text-gray-500">No invoices found for this client.</p>
+                <a href="{% url 'invoice_app:invoice_create' %}?client={{ client.pk }}" class="mt-2 inline-flex items-center px-4 py-2 border border-transparent rounded-md shadow-sm text-sm font-medium text-white bg-blue-600 hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+                    <i class="fas fa-plus mr-2"></i>
+                    Create First Invoice
+                </a>
+            </div>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Action Buttons -->
+    <div class="mt-6 flex justify-center space-x-4">
+        <a href="{% url 'invoice_app:client_update' client.pk %}" class="inline-flex items-center px-6 py-3 border border-blue-300 rounded-lg text-sm font-medium text-blue-700 bg-blue-50 hover:bg-blue-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-blue-500">
+            <i class="fas fa-edit mr-2"></i>
+            Edit Client
+        </a>
+        
+        <a href="{% url 'invoice_app:client_delete' client.pk %}" class="inline-flex items-center px-6 py-3 border border-red-300 rounded-lg text-sm font-medium text-red-700 bg-red-50 hover:bg-red-100 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-red-500" onclick="return confirm('Are you sure you want to delete this client? This action cannot be undone.')">
+            <i class="fas fa-trash mr-2"></i>
+            Delete Client
+        </a>
+    </div>
+</div>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Add smooth scrolling for any anchor links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+    });
+</script>
+{% endblock %}

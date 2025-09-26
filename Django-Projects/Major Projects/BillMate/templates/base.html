@@ -1,0 +1,215 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}{% endblock %}</title>
+    
+    <!-- Favicon -->
+    <link rel="shortcut icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    <link rel="icon" href="{% static 'images/favicon.ico' %}" type="image/x-icon">
+    
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    {% block extra_head %}{% endblock %}
+</head>
+<body class="bg-gray-100">
+    <header class="bg-white shadow relative">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 md:py-6">
+            <div class="flex justify-between items-center">
+                <!-- Logo and Dashboard Link -->
+                <div class="flex items-center space-x-4">
+                    <a href="{% if user.is_authenticated %}{% url 'invoice_app:dashboard' %}{% else %}/{% endif %}" class="flex items-center space-x-2 flex-shrink-0">
+                        <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"></path>
+                        </svg>
+                        <h1 class="text-xl md:text-2xl font-bold text-gray-900">BillMate</h1>
+                    </a>
+                    {% if user.is_authenticated %}
+                    <a href="{% url 'invoice_app:dashboard' %}" class="md:hidden text-gray-600 hover:text-blue-600 p-2 rounded-full hover:bg-blue-50">
+                        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                        </svg>
+                    </a>
+                    {% endif %}
+                </div>
+
+                <!-- Desktop Navigation -->
+                <nav class="hidden md:flex items-center space-x-1 lg:space-x-4">
+                    {% if user.is_authenticated %}
+                        <div class="hidden md:flex items-center space-x-1">
+                            <a href="{% url 'invoice_app:dashboard' %}" class="flex items-center text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                                </svg>
+                                Dashboard
+                            </a>
+                            <a href="{% url 'invoice_app:user_profile' %}" class="flex items-center text-gray-800 hover:text-blue-600 px-3 py-2 rounded-md text-sm font-medium">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                                </svg>
+                                Profile
+                            </a>
+                        </div>
+                        <form method="post" action="{% url 'logout' %}" class="inline">
+                            {% csrf_token %}
+                            <button type="submit" class="ml-2 lg:ml-4 bg-red-600 hover:bg-red-700 text-white px-3 lg:px-4 py-2 rounded-md text-sm font-medium transition-colors">
+                                Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'invoice_app:about' %}" class="hidden sm:inline-block text-gray-800 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-full text-sm font-medium transition-colors">
+                            About
+                        </a>
+                        <a href="{% url 'invoice_app:privacy' %}" class="hidden sm:inline-block text-gray-800 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-full text-sm font-medium transition-colors">
+                            Privacy
+                        </a>
+                        <a href="{% url 'invoice_app:terms' %}" class="hidden sm:inline-block text-gray-800 hover:text-blue-600 hover:bg-blue-50 px-3 py-2 rounded-full text-sm font-medium transition-colors">
+                            Terms
+                        </a>
+                        <a href="{% url 'login' %}" class="ml-2 lg:ml-4 bg-blue-600 text-white px-3 lg:px-4 py-2 rounded-md hover:bg-blue-700 text-sm font-medium transition-colors">
+                            Sign In
+                        </a>
+                    {% endif %}
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button type="button" class="mobile-menu-button p-2 -mr-2 rounded-md text-gray-700 hover:text-gray-600 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-blue-500">
+                        <svg class="h-6 w-6" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+                        </svg>
+                    </button>
+                </div>
+            </div>
+
+            <!-- Mobile menu, show/hide based on menu state -->
+            <div class="mobile-menu hidden md:hidden mt-4 pb-4 border-t border-gray-200">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    {% if user.is_authenticated %}
+                        <a href="{% url 'invoice_app:dashboard' %}" class="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
+                            </svg>
+                            Dashboard
+                        </a>
+                        <a href="{% url 'invoice_app:user_profile' %}" class="flex items-center px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+                            <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                            </svg>
+                            Profile
+                        </a>
+                        <form method="post" action="{% url 'logout' %}" class="px-1">
+                            {% csrf_token %}
+                            <button type="submit" class="w-full text-left px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-red-600 hover:bg-red-50">
+                                Logout
+                            </button>
+                        </form>
+                    {% else %}
+                        <a href="{% url 'invoice_app:about' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+                            <i class="fas fa-info-circle mr-2"></i> About Us
+                        </a>
+                        <a href="{% url 'invoice_app:privacy' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+                            <i class="fas fa-shield-alt mr-2"></i> Privacy Policy
+                        </a>
+                        <a href="{% url 'invoice_app:terms' %}" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 hover:text-blue-600 hover:bg-blue-50">
+                            <i class="fas fa-file-contract mr-2"></i> Terms & Conditions
+                        </a>
+                        <a href="{% url 'login' %}" class="block w-full text-center mt-2 bg-blue-600 text-white px-4 py-2 rounded-md hover:bg-blue-700 text-base font-medium">
+                            <i class="fas fa-sign-in-alt mr-2"></i> Sign In
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Messages -->
+    <div class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 pt-4">
+        {% if messages %}
+            {% for message in messages %}
+                <div class="mb-4 p-4 rounded-md {% if message.tags %}{{ message.tags }}{% endif %}
+                    {% if message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}bg-red-100 text-red-800 border border-red-200
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}bg-green-100 text-green-800 border border-green-200
+                    {% elif message.level == DEFAULT_MESSAGE_LEVELS.WARNING %}bg-yellow-100 text-yellow-800 border border-yellow-200
+                    {% else %}bg-blue-100 text-blue-800 border border-blue-200{% endif %}">
+                    <div class="flex justify-between items-center">
+                        <div class="flex-1">
+                            {{ message }}
+                        </div>
+                        <button type="button" class="ml-4 text-gray-500 hover:text-gray-700" onclick="this.parentElement.parentElement.remove()">
+                            <span class="sr-only">Close</span>
+                            <svg class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    </div>
+
+    <main class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8 py-6 md:py-8">
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer class="bg-white mt-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 border-t border-gray-200">
+            <!-- Grid Layout: Left, Center, Right -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-4 items-center">
+                <!-- Left - Project and Developer Info -->
+                <div class="text-center md:text-left">
+                    <p class="text-gray-700 font-medium text-sm">
+                        Major Project : <span class="font-semibold text-gray-800">Invoice Management</span>
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        Developed by : <span class="font-semibold text-gray-800">Saikat Ghosh</span>
+                    </p>
+                </div>
+                
+                <!-- Center - Copyright -->
+                <div class="text-center order-last md:order-none">
+                    <p class="text-gray-500 text-sm">
+                        &copy; 2025 BillMate. All rights reserved.
+                    </p>
+                </div>
+                
+                <!-- Right - Internship Details -->
+                <div class="text-center md:text-right">
+                    <p class="text-gray-700 font-medium text-sm">
+                        Python Dev Intern
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        Meta Scifor Technologies | Batch : 108
+                    </p>
+                    <p class="text-gray-600 text-sm">
+                        ID : MST01-0153
+                    </p>
+                </div>
+            </div>
+        </div>
+    </footer>
+    <!-- Mobile menu toggle script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const mobileMenuButton = document.querySelector('.mobile-menu-button');
+            const mobileMenu = document.querySelector('.mobile-menu');
+            
+            mobileMenuButton.addEventListener('click', function() {
+                mobileMenu.classList.toggle('hidden');
+            });
+            
+            // Close menu when clicking outside
+            document.addEventListener('click', function(event) {
+                if (!mobileMenu.contains(event.target) && !mobileMenuButton.contains(event.target)) {
+                    mobileMenu.classList.add('hidden');
+                }
+            });
+        });
+    </script>
+</body>
+</html>
